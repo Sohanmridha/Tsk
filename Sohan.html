@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sohan's Cyber Lifestyle & Study Core v3.1</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #06090f;
+            --card-bg: #0d121f;
+            --primary-glow: #00f2fe;
+            --secondary-glow: #9d4edf;
+            --text-color: #c9d1d9;
+            --accent-color: #ff007f;
+            --success-color: #00ff87;
+            --warning-color: #ffaa00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .profile-card {
+            background: linear-gradient(135deg, var(--card-bg), #161c30);
+            border: 2px solid var(--primary-glow);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.25);
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            max-width: 1100px;
+            margin: 0 auto 30px auto;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-color);
+            object-fit: cover;
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+
+        .profile-info h1 {
+            color: #fff;
+            font-size: 26px;
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .level-badge {
+            background: linear-gradient(90deg, var(--accent-color), var(--secondary-glow));
+            color: white;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            display: inline-block;
+            margin-top: 10px;
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+        }
+
+        .social-box {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-btn {
+            color: #fff;
+            font-size: 18px;
+            transition: all 0.3s;
+            text-decoration: none;
+            background: #21262d;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .social-btn.fb:hover { background: #1877f2; box-shadow: 0 0 10px #1877f2; }
+        .social-btn.insta:hover { background: #e1306c; box-shadow: 0 0 10px #e1306c; }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #21262d;
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-glow);
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.15);
+        }
+
+        .card h2 {
+            font-size: 19px;
+            color: #fff;
+            margin-bottom: 18px;
+            border-bottom: 2px solid #21262d;
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #141926;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-glow);
+        }
+
+        .item-row.imp { border-left-color: var(--accent-color); }
+        .item-row.therapy { border-left-color: var(--warning-color); }
+
+        .namaz-select {
+            background: #21262d;
+            color: #fff;
+            border: 1px solid #30363d;
+            padding: 5px;
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .counter-btn {
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .timer-display {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: var(--success-color);
+            text-shadow: 0 0 8px rgba(0, 255, 135, 0.6);
+        }
+
+        .btn-timer {
+            background: transparent;
+            border: 1px solid var(--primary-glow);
+            color: var(--primary-glow);
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-timer:hover {
+            background: rgba(0, 242, 254, 0.1);
+        }
+
+        /* Fullscreen Overlay Mode */
+        #fullscreen-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(4, 6, 10, 0.99);
+            z-index: 9999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #fullscreen-title {
+            font-size: 32px;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        #fullscreen-timer {
+            font-size: 110px;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--success-color);
+            text-shadow: 0 0 40px var(--success-color);
+            margin-bottom: 40px;
+        }
+
+        .exit-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+
+        /* Psychological Reward System Layout */
+        .reward-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #1a1520;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #3a1a30;
+            opacity: 0.5;
+        }
+
+        .reward-item.unlocked {
+            background: #122920;
+            border-color: var(--success-color);
+            opacity: 1;
+        }
+
+        .lock-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .unlocked-badge {
+            background: var(--success-color);
+            color: black;
+        }
+
+        .game-area {
+            background: #171d2c;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        #game-target {
+            width: 100px;
+            height: 100px;
+            margin: 15px auto;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+            background-color: var(--accent-color);
+            user-select: none;
+        }
+
+        .summary-box {
+            grid-column: 1 / -1;
+            background: linear-gradient(45deg, #121824, #1c1224);
+            border: 2px dashed var(--success-color);
+            text-align: center;
+        }
+
+        .progress-container {
+            background: #21262d;
+            border-radius: 20px;
+            height: 25px;
+            width: 100%;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary-glow), var(--success-color));
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .guide-text {
+            font-size: 12px;
+            color: #8b949e;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fullscreen Live Overlay Mode Panel -->
+    <div id="fullscreen-overlay">
+        <div id="fullscreen-title">পড়াশোনা সেশন সচল</div>
+        <div id="fullscreen-timer">00:00:00</div>
+        <button class="exit-btn" onclick="exitFullscreen()">সেশন শেষ করুন (Exit)</button>
+    </div>
+
+    <!-- Header zone -->
+    <div class="profile-card">
+        <img src="https://lh3.googleusercontent.com/d/1MDGoiTMStjuJb9twoi7_pqeyElkzU9kl" alt="Mohammad Sohan Mridha" class="profile-img" onerror="this.src='https://via.placeholder.com/150'">
+        <div class="profile-info">
+            <h1>Mohammad Sohan Mridha</h1>
+            <p><i class="fa-solid fa-graduation-cap"></i> পটুয়াখালী সরকারি কলেজ</p>
+            <p><i class="fa-solid fa-atom"></i> অনার্স ৩য় বর্ষ — ফিজিক্স ডিপার্টমেন্ট</p>
+            <div class="level-badge" id="user-level">Level Roadmap: Loading...</div>
+            <div class="social-box">
+                <a href="https://www.facebook.com/share/1EkSuXsF6p/" target="_blank" class="social-btn fb"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/sm.sohan.mridha?igsh=eTh0dGZma2MxaGI4" target="_blank" class="social-btn insta"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Grid System -->
+    <div class="dashboard-grid">
+
+        <!-- 5 Waqt Namaz Live Tracking System -->
+        <div class="card">
+            <h2><i class="fa-solid fa-mosque" style="color: var(--primary-glow);"></i> ৫ ওয়াক্ত লাইভ নামাজ ট্র্যাকিং</h2>
+            <div class="item-row">
+                <span>ফজর (ভোর)</span>
+                <select id="nm-fajr" class="namaz-select" onchange="trackNamaz('fajr')">
+                    <option value="none">পড়া হয়নি</option>
+                    <option value="mosque">মসজিদে (জামায়াত)</option>
+                    <option value="home">ঘরে একা</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <span>যোহর (দুপুর)</span>
+                <select id="nm-dhuhr" class="namaz-select" onchange="trackNamaz('dhuhr')">
+                    <option value="none">পড়া হয়নি</option>
+                    <option value="mosque">মসজিদে (জামায়াত)</option>
+                    <option value="home">ঘরে একা</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <span>আসর (বিকেল)</span>
+                <select id="nm-asr" class="namaz-select" onchange="trackNamaz('asr')">
+                    <option value="none">পড়া হয়নি</option>
+                    <option value="mosque">মসজিদে (জামায়াত)</option>
+                    <option value="home">ঘরে একা</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <span>মাগরিব (সন্ধ্যা)</span>
+                <select id="nm-maghrib" class="namaz-select" onchange="trackNamaz('maghrib')">
+                    <option value="none">পড়া হয়নি</option>
+                    <option value="mosque">মসজিদে (জামায়াত)</option>
+                    <option value="home">ঘরে একা</option>
+                </select>
+            </div>
+            <div class="item-row">
+                <span>ইশা (রাত)</span>
+                <select id="nm-isha" class="namaz-select" onchange="trackNamaz('isha')">
+                    <option value="none">পড়া হয়নি</option>
+                    <option value="mosque">মসজিদে (জামায়াত)</option>
+                    <option value="home">ঘরে একা</option>
+                </select>
+            </div>
+            <p class="guide-text">⭐ <b>পয়েন্ট বন্টন:</b> মসজিদে জামায়াতে আদায় করলে <b>২৫ EXP</b> এবং ঘরে একা আদায় করলে <b>১০ EXP</b> যুক্ত হবে।</p>
+        </div>
+
+        <!-- Voice Therapy Card -->
+        <div class="card">
+            <h2><i class="fa-solid fa-microphone-lines" style="color: var(--warning-color);"></i> পিবেরফোনিয়া ভয়েস থেরাপী</h2>
+            <div class="item-row therapy"><span>Mooo (১০ বার)</span><div><span id="c1">0</span>/10 <button class="counter-btn" onclick="countTherapy('c1', 10)">+</button></div></div>
+            <div class="item-row therapy"><span>Eeee (১০ বার)</span><div><span id="c2">0</span>/10 <button class="counter-btn" onclick="countTherapy('c2', 10)">+</button></div></div>
+            <div class="item-row therapy"><span>Aaaaaa (১০ বার)</span><div><span id="c3">0</span>/10 <button class="counter-btn" onclick="countTherapy('c3', 10)">+</button></div></div>
+            <div class="item-row therapy"><span>Ummm (১০ বার)</span><div><span id="c4">0</span>/10 <button class="counter-btn" onclick="countTherapy('c4', 10)">+</button></div></div>
+            <div class="item-row therapy"><span>Maaa (১০ বার)</span><div><span id="c5">0</span>/10 <button class="counter-btn" onclick="countTherapy('c5', 10)">+</button></div></div>
+            <div class="item-row therapy"><span>বই পড়া (২০ মিনিট)</span><input type="checkbox" id="book-chk" class="task-check" onchange="toggleCheckbox('book-chk', 20)"></div>
+        </div>
+
+        <!-- Psychological Compulsory Rewards Locked System -->
+        <div class="card">
+            <h2><i class="fa-solid fa-gift" style="color: var(--secondary-glow);"></i> মনস্তাত্ত্বিক রিওয়ার্ড লক প্যাডেল</h2>
+            <p class="guide-text">EXP অর্জন করে বিনোদনের অনুমতি লক আনলক করুন:</p><br>
+            <div class="reward-item" id="rew-1">
+                <span>📱 ১৫ মিনিট সোশ্যাল মিডিয়া ব্রাউজিং</span>
+                <span class="lock-badge" id="badge-1">১০০ EXP প্রয়োজন</span>
+            </div>
+            <div class="reward-item" id="rew-2">
+                <span>🎮 ২০ মিনিট অনলাইন গেম / ভিডিও</span>
+                <span class="lock-badge" id="badge-2">২৫০ EXP প্রয়োজন</span>
+            </div>
+            <div class="reward-item" id="rew-3">
+                <span>🍿 ১টি পছন্দের কন্টেন্ট বা নাটক দেখা</span>
+                <span class="lock-badge" id="badge-3">৫০০ EXP প্রয়োজন</span>
+            </div>
+            <p class="guide-text" style="color: var(--accent-color);">🚫 শর্ত: লক্ষ্য পূরণ করার আগে ব্রেনকে বিনোদন দেওয়া সম্পূর্ণ নিষিদ্ধ!</p>
+        </div>
+
+        <!-- Workout Management -->
+        <div class="card">
+            <h2><i class="fa-solid fa-dumbbell" style="color: var(--accent-color);"></i> শারীরিক ব্যায়াম ও সূচি</h2>
+            <div class="item-row"><span>সকাল (৬:০০ - 六:৩০)</span><input type="checkbox" id="work-morn" class="task-check" onchange="toggleCheckbox('work-morn', 15)"></div>
+            <div class="item-row"><span>বিকেল (৫:০০ - ৫:৩০)</span><input type="checkbox" id="work-eve" class="task-check" onchange="toggleCheckbox('work-eve', 15)"></div>
+        </div>
+
+        <!-- 1st Year Improvements (Core Focus) -->
+        <div class="card">
+            <h2><i class="fa-solid fa-triangle-exclamation" style="color: var(--accent-color);"></i> ১ম বর্ষ ইমপ্রুভমেন্ট সাবজেক্ট</h2>
+            <div class="item-row imp">
+                <div><div>বলবিদ্যা (Mechanics)</div></div>
+                <div class="timer-display" id="time-imp1">00:00:00</div>
+                <button class="btn-timer" onclick="launchLiveTimer('imp1', 'বলবিদ্যা (১ম বর্ষ)')">Live</button>
+            </div>
+            <div class="item-row imp">
+                <div><div>তাপ গতিবিদ্যা (Thermodynamics)</div></div>
+                <div class="timer-display" id="time-imp2">00:00:00</div>
+                <button class="btn-timer" onclick="launchLiveTimer('imp2', 'তাপ গতিবিদ্যা (১ম বর্ষ)')">Live</button>
+            </div>
+        </div>
+
+        <!-- Honors 3rd Year Core -->
+        <div class="card">
+            <h2><i class="fa-solid fa-book-open" style="color: var(--success-color);"></i> অনার্স ৩য় বর্ষ — মূল ৭টি বিষয়</h2>
+            <div class="item-row"><span>সাবজেক্ট ১</span><span class="timer-display" id="time-h1">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('h1', '৩য় বর্ষ - সাবজেক্ট ১')">Live</button></div>
+            <div class="item-row"><span>সাবজেক্ট ২</span><span class="timer-display" id="time-h2">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('h2', '৩য় বর্ষ - সাবজেক্ট ২')">Live</button></div>
+            <div class="item-row"><span>সাবজেক্ট ৩</span><span class="timer-display" id="time-h3">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('h3', '৩য় বর্ষ - সাবজেক্ট ৩')">Live</button></div>
+            <div class="item-row"><span>সাবজেক্ট ৪</span><span class="timer-display" id="time-h4">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('h4', '৩য় বর্ষ - সাবজেক্ট ৪')">Live</button></div>
+            <div class="item-row"><span>সাবজেক্ট ৫</span><span class="timer-display" id="time-h5">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('h5', '৩য় বর্ষ - সাবজেক্ট ৫')">Live</button></div>
+            <div class="item-row"><span>সাবজেক্ট ৬</span><span class="timer-display" id="time-h6">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('h6', '৩য় বর্ষ - সাবজেক্ট ৬')">Live</button></div>
+            <div class="item-row"><span>সাবজেক্ট ৭</span><span class="timer-display" id="time-h7">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('h7', '৩য় বর্ষ - সাবজেক্ট ৭')">Live</button></div>
+        </div>
+
+        <!-- Brain Booster Mini Game -->
+        <div class="card">
+            <h2><i class="fa-solid fa-brain" style="color: #00f2fe;"></i> ফোকাস বুস্টার গেম</h2>
+            <p class="guide-text">সবুজ বক্স হওয়া মাত্রই দ্রুত ক্লিক করুন! মনোযোগ বৃদ্ধি গেম।</p>
+            <div class="game-area">
+                <div id="game-target" onclick="clickGameTarget()">READY</div>
+                <div id="game-score">স্কোর: ০</div>
+            </div>
+        </div>
+
+        <!-- Summary Status Display Board -->
+        <div class="card summary-box">
+            <h2><i class="fa-solid fa-square-poll-vertical"></i> দিনশেষের টোটাল প্রোগ্রেস ও ট্র্যাকিং ড্যাশবোর্ড</h2>
+            <p id="total-status-msg">আজকের মিশন কেবল শুরু হলো। রুটিন বজায় রাখুন, সোহান!</p>
+            <div class="progress-container"><div class="progress-bar" id="master-bar"></div></div>
+            <p class="guide-text" style="color: #fff;">"লাইফটাইম ডেটা সেভ ইঞ্জিন সক্রিয়। আপনার প্রোগ্রেস নিরাপদে স্টোর হচ্ছে।"</p>
+        </div>
+
+    </div>
+
+    <script>
+        // Lifetime Persistent Storage Core Engine Fixes
+        let totalExp = parseInt(localStorage.getItem('sohan_totalExp')) || 0;
+        let mainInterval = null;
+        let globalSeconds = JSON.parse(localStorage.getItem('sohan_globalSeconds')) || {};
+        let namazState = JSON.parse(localStorage.getItem('sohan_namazState')) || {};
+        let checkedStates = JSON.parse(localStorage.getItem('sohan_checkedStates')) || {};
+        let targetSubjectId = null;
+
+        window.onload = function() {
+            updateLevelDisplay();
+            
+            // Restore saved timers
+            Object.keys(globalSeconds).forEach(id => {
+                let elem = document.getElementById(`time-${id}`);
+                if (elem) elem.innerText = formatString(globalSeconds[id]);
+            });
+
+            // Restore Checkboxes State
+            Object.keys(checkedStates).forEach(id => {
+                let chk = document.getElementById(id);
+                if (chk) chk.checked = checkedStates[id];
+            });
+
+            // Restore Namaz Dropdowns selection
+            Object.keys(namazState).forEach(id => {
+                let dropdown = document.getElementById(`nm-${id}`);
+                if (dropdown) dropdown.value = namazState[id];
+            });
+
+            checkRewards();
+            calculateProgress();
+            setTimeout(runGameCycle, 1000); // Trigger game start safely
+        };
+
+        function saveCoreData() {
+            localStorage.setItem('sohan_totalExp', totalExp);
+            localStorage.setItem('sohan_globalSeconds', JSON.stringify(globalSeconds));
+            localStorage.setItem('sohan_namazState', JSON.stringify(namazState));
+            localStorage.setItem('sohan_checkedStates', JSON.stringify(checkedStates));
+        }
+
+        function updateLevelDisplay() {
+            let levelTitle = "Initiate (রুটিন নবাগত)";
+            if (totalExp >= 500) levelTitle = "Physics Titan (মাস্টারমাইন্ড)";
+            else if (totalExp >= 250) levelTitle = "Unstoppable (অদম্য সোহান)";
+            else if (totalExp >= 100) levelTitle = "Disciplined (শৃঙ্খলার প্রতীক)";
+
+            document.getElementById('user-level').innerText = `Level Roadmap: ${levelTitle} (${totalExp} EXP)`;
+            checkRewards();
+        }
+
+        // Live Namaz Logic
+        function trackNamaz(id) {
+            let val = document.getElementById(`nm-${id}`).value;
+            namazState[id] = val;
+            
+            if (val === 'mosque') totalExp += 25;
+            else if (val === 'home') totalExp += 10;
+            
+            saveCoreData();
+            updateLevelDisplay();
+            calculateProgress();
+        }
+
+        function toggleCheckbox(id, points) {
+            let chk = document.getElementById(id);
+            checkedStates[id] = chk.checked;
+            if (chk.checked) totalExp += points;
+            else totalExp = Math.max(0, totalExp - points);
+            
+            saveCoreData();
+            updateLevelDisplay();
+            calculateProgress();
+        }
+
+        function countTherapy(id, max) {
+            let elem = document.getElementById(id);
+            let val = parseInt(elem.innerText);
+            if (val < max) {
+                val++;
+                elem.innerText = val;
+                if (val === max) {
+                    totalExp += 10;
+                    saveCoreData();
+                    updateLevelDisplay();
+                }
+            }
+        }
+
+        // Psychological Unlock Logic Engine
+        function checkRewards() {
+            handleRewardItem('rew-1', 'badge-1', 100);
+            handleRewardItem('rew-2', 'badge-2', 250);
+            handleRewardItem('rew-3', 'badge-3', 500);
+        }
+
+        function handleRewardItem(boxId, badgeId, target) {
+            let box = document.getElementById(boxId);
+            let badge = document.getElementById(badgeId);
+            if (!box || !badge) return;
+            if (totalExp >= target) {
+                box.classList.add('unlocked');
+                badge.innerText = "UNLOCKED";
+                badge.classList.add('unlocked-badge');
+            } else {
+                box.classList.remove('unlocked');
+                badge.innerText = `${target} EXP প্রয়োজন`;
+                badge.classList.remove('unlocked-badge');
+            }
+        }
+
+        // FIXED Theater Focus Mode Controller
+        function launchLiveTimer(id, titleText) {
+            targetSubjectId = id;
+            if (!globalSeconds[id]) globalSeconds[id] = 0;
+
+            document.getElementById('fullscreen-title').innerText = "পড়াশোনা সেশন সচল: " + titleText;
+            document.getElementById('fullscreen-overlay').style.display = 'flex';
+
+            // Clear any active running intervals to avoid duplication bugs
+            if(mainInterval) clearInterval(mainInterval);
+
+            mainInterval = setInterval(() => {
+                globalSeconds[id]++;
+                let timeStr = formatString(globalSeconds[id]);
+                document.getElementById('fullscreen-timer').innerText = timeStr;
+                
+                let localDisplay = document.getElementById(`time-${id}`);
+                if(localDisplay) localDisplay.innerText = timeStr;
+            }, 1000);
+        }
+
+        function exitFullscreen() {
+            if(mainInterval) clearInterval(mainInterval);
+            document.getElementById('fullscreen-overlay').style.display = 'none';
+            totalExp += 30; // Study Finish Bonus
+            saveCoreData();
+            updateLevelDisplay();
+        }
+
+        function formatString(sec) {
+            let h = Math.floor(sec / 3600);
+            let m = Math.floor((sec % 3600) / 60);
+            let s = sec % 60;
+            return `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        // FIXED Brain Focus Booster Game Engine
+        let score = 0;
+        let isGreen = false;
+        function runGameCycle() {
+            let target = document.getElementById('game-target');
+            if(!target) return;
+            if (Math.random() > 0.5) {
+                target.style.backgroundColor = '#00ff87';
+                target.innerText = "CLICK!";
+                isGreen = true;
+            } else {
+                target.style.backgroundColor = '#ff007f';
+                target.innerText = "WAIT";
+                isGreen = false;
+            }
+            setTimeout(runGameCycle, 2000);
+        }
+        
+        function clickGameTarget() {
+            let scoreBoard = document.getElementById('game-score');
+            if (isGreen) {
+                score += 10;
+                totalExp += 5;
+                saveCoreData();
+                updateLevelDisplay();
+            } else {
+                score = Math.max(0, score - 5);
+            }
+            if(scoreBoard) scoreBoard.innerText = "স্কোর: " + score;
+        }
+
+        function calculateProgress() {
+            let totalTasks = 8; 
+            let scoreCount = 0;
+            
+            let dropdowns = document.querySelectorAll('.namaz-select');
+            dropdowns.forEach(d => { if(d && d.value !== 'none') scoreCount++; });
+            
+            let bChk = document.getElementById('book-chk');
+            let wMorn = document.getElementById('work-morn');
+            let wEve = document.getElementById('work-eve');
+
+            if(bChk && bChk.checked) scoreCount++;
+            if(wMorn && wMorn.checked) scoreCount++;
+            if(wEve && wEve.checked) scoreCount++;
+
+            let finalPercent = Math.round((scoreCount / totalTasks) * 100);
+            if(finalPercent > 100) finalPercent = 100;
+
+            let masterBar = document.getElementById('master-bar');
+            if(masterBar) masterBar.style.width = finalPercent + '%';
+            
+            let msg = document.getElementById('total-status-msg');
+            if(!msg) return;
+            if (finalPercent >= 90) msg.innerText = "অসাধারণ সোহান! আপনি আজকের দিনের প্রায় সব চ্যালেঞ্জ সফলভাবে শেষ করেছেন!";
+            else if (finalPercent >= 50) msg.innerText = "অর্ধেক লক্ষ্য পূরণ হয়েছে! বাকি কাজগুলোও দ্রুত শেষ করে ফেলুন।";
+            else msg.innerText = "অগ্রগতি হচ্ছে! আপনার আজকের দিনের মোট কাজের " + finalPercent + "% সম্পন্ন হয়েছে।";
+        }
+    </script>
+</body>
+</html>
