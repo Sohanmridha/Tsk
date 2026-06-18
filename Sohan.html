@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sohan's Core Dynamic Lifetime Ledger v7.0</title>
+    <title>Mridha LedgerX - Ultimate Cyber Dashboard</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <style>
         :root {
@@ -28,7 +27,7 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            padding: 10px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -43,16 +42,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 2006px;
             margin-bottom: 20px;
             gap: 10px;
             flex-wrap: wrap;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.05);
         }
 
         .nav-brand {
             font-weight: bold;
             color: var(--primary-glow);
             text-shadow: 0 0 10px var(--primary-glow);
-            font-size: 16px;
+            font-size: 18px;
+            letter-spacing: 1px;
         }
 
         .nav-links {
@@ -65,11 +67,11 @@
             background: #141926;
             border: 1px solid #30363d;
             color: #fff;
-            padding: 8px 12px;
+            padding: 8px 14px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 13px;
-            transition: all 0.2s;
+            transition: all 0.2s ease-in-out;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -80,79 +82,17 @@
             color: #000;
             border-color: var(--primary-glow);
             box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
-        }
-
-        /* Access Gateway */
-        #login-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #04060a;
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-        }
-
-        .login-card {
-            background: var(--card-bg);
-            border: 2px solid var(--primary-glow);
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.25);
-            padding: 30px 20px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .login-input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            background: #141926;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            color: #fff;
-            text-align: center;
-            font-size: 16px;
-            outline: none;
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
-            color: #fff;
-            border: none;
-            border-radius: 8px;
             font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 15px;
-        }
-
-        .gmail-btn {
-            width: 100%;
-            padding: 12px;
-            background: #db4437;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
 
         #dashboard-wrapper, .panel-view {
-            display: none;
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
+        }
+
+        .panel-view {
+            display: none;
         }
 
         .panel-view.active-view {
@@ -163,7 +103,7 @@
         .profile-card {
             background: linear-gradient(135deg, var(--card-bg), #161c30);
             border: 2px solid var(--primary-glow);
-            box-shadow: 0 0 25px rgba(0, 242, 254, 0.25);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.15);
             border-radius: 20px;
             padding: 20px;
             display: flex;
@@ -179,11 +119,28 @@
             border-radius: 50%;
             border: 3px solid var(--accent-color);
             object-fit: cover;
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+        }
+
+        .profile-avatar-text {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-glow);
+            background: linear-gradient(45deg, var(--secondary-glow), var(--accent-color));
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(157, 78, 223, 0.5);
         }
 
         .profile-info h1 {
             color: #fff;
-            font-size: 22px;
+            font-size: 24px;
             text-shadow: 0 0 10px var(--primary-glow);
         }
 
@@ -196,15 +153,13 @@
             font-size: 12px;
             display: inline-block;
             margin-top: 8px;
+            box-shadow: 0 0 10px rgba(157, 78, 223, 0.3);
         }
-
-        .social-box { margin-top: 10px; display: flex; gap: 8px; }
-        .social-btn { color: #fff; font-size: 15px; background: #21262d; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; text-decoration: none; }
 
         /* Responsive Grid Layout */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
             width: 100%;
         }
@@ -213,16 +168,23 @@
             background: var(--card-bg);
             border: 1px solid #21262d;
             border-radius: 16px;
-            padding: 18px;
+            padding: 20px;
             margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .card h2 {
-            font-size: 17px;
+            font-size: 18px;
             color: #fff;
             margin-bottom: 15px;
             border-bottom: 2px solid #21262d;
             padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card h2 span {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -233,52 +195,112 @@
             align-items: center;
             justify-content: space-between;
             background: #141926;
-            padding: 10px 12px;
+            padding: 12px 14px;
             border-radius: 10px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-size: 14px;
             border-left: 4px solid var(--primary-glow);
+            transition: transform 0.2s;
+        }
+        .item-row:hover {
+            transform: translateX(3px);
         }
 
-        .item-row.imp { border-left-color: var(--accent-color); }
         .item-row.therapy { border-left-color: var(--warning-color); }
+        .item-row.dynamic-subject { border-left-color: var(--success-color); }
 
         .namaz-select {
             background: #21262d;
             color: #fff;
             border: 1px solid #30363d;
-            padding: 6px;
+            padding: 6px 10px;
             border-radius: 6px;
             outline: none;
+            cursor: pointer;
         }
-
         .counter-btn {
             background: #21262d;
             border: 1px solid #30363d;
             color: #fff;
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 5px;
             cursor: pointer;
+            font-weight: bold;
+        }
+        .counter-btn:hover {
+            background: var(--secondary-glow);
+            border-color: var(--secondary-glow);
+        }
+
+        .action-del-btn {
+            background: transparent;
+            border: none;
+            color: #8b949e;
+            cursor: pointer;
+            font-size: 13px;
+            margin-left: 10px;
+            transition: color 0.2s;
+        }
+        .action-del-btn:hover {
+            color: var(--accent-color);
         }
 
         .timer-display {
             font-family: 'Courier New', Courier, monospace;
             font-weight: bold;
             color: var(--success-color);
+            margin-right: 10px;
+            font-size: 15px;
         }
 
         .btn-timer {
             background: transparent;
             border: 1px solid var(--primary-glow);
             color: var(--primary-glow);
-            padding: 5px 10px;
+            padding: 5px 12px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
             font-weight: bold;
         }
+        .btn-timer:hover {
+            background: var(--primary-glow);
+            color: #000;
+        }
 
-        /* Fixed Fullscreen Study Engine Overlay */
+        /* Settings Form CSS */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #8b949e;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-control {
+            width: 100%;
+            background: #141926;
+            border: 1px solid #30363d;
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+        }
+        .form-control:focus {
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 5px rgba(0, 242, 254, 0.2);
+        }
+
+        .flex-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        /* Fixed Fullscreen Study Engine Overlay Fix */
         #fullscreen-overlay {
             display: none;
             position: fixed;
@@ -287,27 +309,52 @@
             width: 100vw;
             height: 100vh;
             background: rgba(4, 6, 10, 0.99);
-            z-index: 9999;
+            z-index: 99999; /* জেন-ইন্ডেক্স বাড়িয়ে ফিক্স করা হলো */
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             padding: 20px;
         }
 
-        #fullscreen-title { font-size: 22px; color: #fff; margin-bottom: 20px; text-align: center; }
-        #fullscreen-timer { font-size: 60px; font-family: 'Courier New', Courier, monospace; color: var(--success-color); margin-bottom: 40px; }
+        /* Overlay Top Navigation Bar */
+        .overlay-nav {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .overlay-content-area {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        #fullscreen-title { font-size: 26px; color: #fff; margin-bottom: 20px; text-shadow: 0 0 10px var(--primary-glow); font-weight: bold; }
+        #fullscreen-timer { font-size: 80px; font-family: 'Courier New', Courier, monospace; color: var(--success-color); margin-bottom: 40px; text-shadow: 0 0 20px var(--success-color); }
         
         .exit-btn {
-            background: var(--accent-color);
+            background: linear-gradient(90deg, var(--accent-color), #b00056);
             color: white;
             border: none;
-            padding: 12px 35px;
+            padding: 14px 40px;
             font-size: 16px;
             font-weight: bold;
             border-radius: 25px;
             cursor: pointer;
             box-shadow: 0 0 15px var(--accent-color);
+            transition: 0.2s;
         }
+        .exit-btn:hover { transform: scale(1.03); }
 
         /* Data Ledger Components */
         .date-picker-box {
@@ -333,7 +380,7 @@
 
         .audit-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 15px;
             margin-top: 15px;
         }
@@ -346,7 +393,7 @@
         }
 
         .audit-title {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--primary-glow);
             font-weight: bold;
             margin-bottom: 10px;
@@ -368,339 +415,484 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
+            padding: 12px;
             border-bottom: 1px solid #21262d;
             font-size: 13px;
         }
-
-        .history-row:last-child { border-bottom: none; }
 
         .summary-box {
             background: linear-gradient(45deg, #121824, #1c1224);
             border: 2px dashed var(--success-color);
             text-align: center;
-            padding: 15px;
+            padding: 18px;
             border-radius: 16px;
             margin-top: 15px;
+            box-shadow: 0 0 15px rgba(0, 255, 135, 0.1);
         }
 
         .progress-container { background: #21262d; border-radius: 20px; height: 18px; width: 100%; margin: 12px 0; overflow: hidden; }
-        .progress-bar { background: linear-gradient(90deg, var(--primary-glow), var(--success-color)); height: 100%; width: 0%; }
+        .progress-bar { background: linear-gradient(90deg, var(--primary-glow), var(--success-color)); height: 100%; width: 0%; transition: width 0.4s ease; }
         .guide-text { font-size: 12px; color: #8b949e; margin-top: 4px; }
         
-        /* Focus Games UI Elements */
-        .game-panel { background: #141926; padding: 12px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #21262d; }
-        .game-title { font-size: 13px; font-weight: bold; color: var(--primary-glow); margin-bottom: 8px; }
-        #game-target { width: 100%; height: 50px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #000; background-color: var(--accent-color); user-select: none; }
-        .matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 8px; }
-        .matrix-btn { background: #21262d; border: 1px solid #30363d; color: #fff; padding: 12px; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; }
-        #stroop-text { font-size: 22px; font-weight: 900; margin: 10px 0; text-align: center; }
-        .reward-item { display: flex; align-items: center; justify-content: space-between; background: #1a1520; padding: 10px; border-radius: 8px; margin-bottom: 6px; font-size: 13px; opacity: 0.5; }
-        .reward-item.unlocked { opacity: 1; border: 1px solid var(--success-color); background: #122920; }
-        .lock-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: var(--accent-color); color: white; }
-        .unlocked-badge { background: var(--success-color); color: black; }
+        .badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 5px;
+        }
+        .config-badge {
+            background: #21262d;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
     </style>
 </head>
 <body>
-
-    <!-- Security Authentication Gate -->
-    <div id="login-screen">
-        <div class="login-card">
-            <h2>SOHAN CORE LOG-IN</h2>
-            <p class="guide-text" style="margin-bottom:15px;">আপনার লাইফটাইম ড্যাশবোর্ড আনলক করুন</p>
-            <input type="password" id="pass-field" class="login-input" placeholder="পাসওয়ার্ড দিন (ডিফল্ট: 1234)">
-            <button class="login-btn" onclick="validateLogin()">লগইন করুন</button>
-            <div style="color: #8b949e; margin-bottom: 12px; font-size: 12px;">অথবা</div>
-            <button class="gmail-btn" onclick="secureGmailLoginEngine()">
-                <i class="fa-brands fa-google"></i> Gmail দিয়ে সরাসরি প্রবেশ
-            </button>
-        </div>
-    </div>
-
-    <!-- Core Dynamic Application Workspace -->
     <div id="dashboard-wrapper">
         <div class="cyber-nav">
-            <div class="nav-brand"><i class="fa-solid fa-bolt"></i> SOHAN DYNAMIC ENGINE v7.0</div>
+            <div class="nav-brand"><i class="fa-solid fa-bolt"></i> MRIDHA LEDGERX</div>
             <div class="nav-links">
-                <button class="nav-btn active" id="btn-home" onclick="switchPanelView('home')"><i class="fa-solid fa-house"></i> হোম হাব</button>
-                <button class="nav-btn" id="btn-ledger" onclick="switchPanelView('ledger')"><i class="fa-solid fa-calendar-check"></i> ডে-বাই-ডে ফুল রিপোর্ট</button>
+                <button class="nav-btn active" id="btn-home" onclick="window.switchPanelView('home')"><i class="fa-solid fa-house"></i> হোম হাব</button>
+                <button class="nav-btn" id="btn-ledger" onclick="window.switchPanelView('ledger')"><i class="fa-solid fa-calendar-check"></i> লাইভ রিপোর্ট আর্কাইভ</button>
+                <button class="nav-btn" id="btn-settings" onclick="window.switchPanelView('settings')"><i class="fa-solid fa-gear"></i> ইঞ্জিন কাস্টমাইজেশন</button>
             </div>
         </div>
 
-        <!-- Fullscreen Active Overlay Engine -->
         <div id="fullscreen-overlay">
-            <div id="fullscreen-title">পড়াশোনা সেশন সচল</div>
-            <div id="fullscreen-timer">00:00:00</div>
-            <button class="exit-btn" id="btn-end-session" onclick="exitFullscreen()">সেশন শেষ করুন (Auto-Save)</button>
+            <div class="overlay-nav">
+                <div style="font-weight:bold; color:var(--primary-glow); font-size:14px;"><i class="fa-solid fa-stopwatch"></i> Mridha LedgerX Tracker</div>
+                <div class="nav-links">
+                    <button class="nav-btn" onclick="window.switchPanelView('home'); document.getElementById('fullscreen-overlay').style.display='none';"><i class="fa-solid fa-house"></i> হোম-এ ফিরুন</button>
+                    <button class="nav-btn" style="background:var(--success-color); color:#000; font-weight:bold;" onclick="window.exitFullscreen()"><i class="fa-solid fa-floppy-disk"></i> সেভ ও ব্যাক</button>
+                </div>
+            </div>
+            <div class="overlay-content-area">
+                <div id="fullscreen-title">পড়াশোনা সেশন সচল</div>
+                <div id="fullscreen-timer">00:00:00</div>
+                <button class="exit-btn" onclick="window.exitFullscreen()"><i class="fa-solid fa-circle-check"></i> সেশন শেষ করুন ও সেভ দিন</button>
+            </div>
         </div>
 
-        <!-- ================= PANEL 1: HOME WORKSPACE ================= -->
         <div id="panel-home" class="panel-view active-view">
             <div class="profile-card">
-                <img src="https://lh3.googleusercontent.com/d/1MDGoiTMStjuJb9twoi7_pqeyElkzU9kl" alt="Sohan" class="profile-img" onerror="this.src='https://via.placeholder.com/150'">
+                <div id="avatar-container"></div>
                 <div class="profile-info">
-                    <h1 id="user-display-name">Mohammad Sohan Mridha</h1>
-                    <p><i class="fa-solid fa-graduation-cap"></i> পটুয়াখালী সরকারি কলেজ | অনার্স ৩য় বর্ষ (ফিজিক্স)</p>
+                    <h1 id="lbl-user-name">ইউজার নেম</h1>
+                    <p id="lbl-user-dept"><i class="fa-solid fa-graduation-cap"></i> ডিপার্টমেন্ট বিবরণ</p>
                     <div class="level-badge" id="user-level">EXP: 0</div>
-                    <div class="social-box">
-                        <a href="https://www.facebook.com/share/1EkSuXsF6p/" target="_blank" class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/sm.sohan.mridha?igsh=eTh0dGZma2MxaGI4" target="_blank" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
-                    </div>
                 </div>
             </div>
 
             <div class="dashboard-grid">
-                <!-- Namaz Component -->
                 <div class="card">
-                    <h2><i class="fa-solid fa-mosque" style="color: var(--primary-glow);"></i> ৫ ওয়াক্ত লাইভ নামাজ ট্র্যাকিং</h2>
-                    <div class="item-row"><span>ফজর</span><select id="nm-fajr" class="namaz-select" onchange="trackNamaz('fajr')"><option value="none">পড়া হয়নি</option><option value="mosque">মসজিদে (জামায়াত)</option><option value="home">ঘরে একা</option></select></div>
-                    <div class="item-row"><span>যোহর</span><select id="nm-dhuhr" class="namaz-select" onchange="trackNamaz('dhuhr')"><option value="none">পড়া হয়নি</option><option value="mosque">মসজিদে (জামায়াত)</option><option value="home">ঘরে একা</option></select></div>
-                    <div class="item-row"><span>আসর</span><select id="nm-asr" class="namaz-select" onchange="trackNamaz('asr')"><option value="none">পড়া হয়নি</option><option value="mosque">মসজিদে (জামায়াত)</option><option value="home">ঘরে একা</option></select></div>
-                    <div class="item-row"><span>মাগরিব</span><select id="nm-maghrib" class="namaz-select" onchange="trackNamaz('maghrib')"><option value="none">পড়া হয়নি</option><option value="mosque">মসজিদে (জামায়াত)</option><option value="home">ঘরে একা</option></select></div>
-                    <div class="item-row"><span>ইশা</span><select id="nm-isha" class="namaz-select" onchange="trackNamaz('isha')"><option value="none">পড়া হয়নি</option><option value="mosque">মসজিদে (জামায়াত)</option><option value="home">ঘরে একা</option></select></div>
+                    <h2><span><i class="fa-solid fa-mosque" style="color: var(--primary-glow);"></i> ৫ ওয়াক্ত লাইভ নামাজ ট্র্যাকিং</span></h2>
+                    <div class="item-row"><span>ফজর</span><select id="nm-fajr" class="namaz-select" onchange="window.trackNamaz('fajr')"><option value="none">❌ পড়া হয়নি</option><option value="mosque">🕌 মসজিদে (জামায়াত)</option><option value="home">🏠 ঘরে একা</option></select></div>
+                    <div class="item-row"><span>যোহর</span><select id="nm-dhuhr" class="namaz-select" onchange="window.trackNamaz('dhuhr')"><option value="none">❌ পড়া হয়নি</option><option value="mosque">🕌 মসজিদে (জামায়াত)</option><option value="home">🏠 ঘরে একা</option></select></div>
+                    <div class="item-row"><span>আসর</span><select id="nm-asr" class="namaz-select" onchange="window.trackNamaz('asr')"><option value="none">❌ পড়া হয়নি</option><option value="mosque">🕌 মসজিদে (জামায়াত)</option><option value="home">🏠 ঘরে একা</option></select></div>
+                    <div class="item-row"><span>মাগরিব</span><select id="nm-maghrib" class="namaz-select" onchange="window.trackNamaz('maghrib')"><option value="none">❌ পড়া হয়নি</option><option value="mosque">🕌 মসজিদে (জামায়াত)</option><option value="home">🏠 ঘরে একা</option></select></div>
+                    <div class="item-row"><span>ইশা</span><select id="nm-isha" class="namaz-select" onchange="window.trackNamaz('isha')"><option value="none">❌ পড়া হয়নি</option><option value="mosque">🕌 মসজিদে (জামায়াত)</option><option value="home">🏠 ঘরে একা</option></select></div>
                 </div>
 
-                <!-- Speech Therapy Controls -->
                 <div class="card">
-                    <h2><i class="fa-solid fa-microphone-lines" style="color: var(--warning-color);"></i> পিবেরফোনিয়া ভвоеস থেরাপী</h2>
-                    <div class="item-row therapy"><span>Mooo (১০ বার)</span><div><span id="c1">0</span>/10 <button class="counter-btn" onclick="countTherapy('c1', 10)">+</button></div></div>
-                    <div class="item-row therapy"><span>Eeee (১০ বার)</span><div><span id="c2">0</span>/10 <button class="counter-btn" onclick="countTherapy('c2', 10)">+</button></div></div>
-                    <div class="item-row therapy"><span>Aaaaaa (১০ বার)</span><div><span id="c3">0</span>/10 <button class="counter-btn" onclick="countTherapy('c3', 10)">+</button></div></div>
-                    <div class="item-row therapy"><span>Ummm (১০ বার)</span><div><span id="c4">0</span>/10 <button class="counter-btn" onclick="countTherapy('c4', 10)">+</button></div></div>
-                    <div class="item-row therapy"><span>Maaa (১০ বার)</span><div><span id="c5">0</span>/10 <button class="counter-btn" onclick="countTherapy('c5', 10)">+</button></div></div>
-                    <div class="item-row therapy"><span>বই পড়া (২০ মিনিট)</span><input type="checkbox" id="book-chk" onchange="toggleCheckbox('book-chk', 20)"></div>
+                    <h2><span><i class="fa-solid fa-microphone-lines" style="color: var(--warning-color);"></i> দৈনিক থেরাপি ও লাইভ হ্যাবিট ট্র্যাকিং</span></h2>
+                    <div id="dynamic-habits-container"></div>
                 </div>
 
-                <!-- Study Core Subjects Analytics -->
                 <div class="card">
-                    <h2><i class="fa-solid fa-book-open" style="color: var(--success-color);"></i> পড়াশোনা ও ফিজিক্স কোর ট্র্যাকার</h2>
-                    <p class="guide-text" style="color: var(--accent-color); font-weight: bold; margin-bottom: 6px;">[১ম বর্ষ ইমপ্রুভমেন্ট বিষয়]</p>
-                    <div class="item-row imp"><span>বলবিদ্যা</span><span class="timer-display" id="time-imp1">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('imp1', 'বলবিদ্যা (১ম বর্ষ)')">Live</button></div>
-                    <div class="item-row imp"><span>ताप গতিবিদ্যা</span><span class="timer-display" id="time-imp2">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('imp2', 'তাপ গতিবিদ্যা (১ম বর্ষ)')">Live</button></div>
-                    
-                    <p class="guide-text" style="color: var(--success-color); font-weight: bold; margin-top:12px; margin-bottom: 6px;">[অনার্স ৩য় বর্ষের ৭টি বিষয়]</p>
-                    <div class="item-row"><span>গণিতীয় পদার্থবিজ্ঞান</span><span class="timer-display" id="time-h1">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('h1', 'গণিতীয় পদার্থবিজ্ঞান')">Live</button></div>
-                    <div class="item-row"><span>তড়িৎ-গতিবিজ্ঞান</span><span class="timer-display" id="time-h2">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('h2', 'তড়িৎ-গতিবিজ্ঞান')">Live</button></div>
-<div class="item-row"><span>কোয়ান্টাম মেকানিক্স-১</span><span class="timer-display" id="time-h3">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('h3', 'কোয়ান্টাম মেকানিক্স-১')">Live</button></div>
-                    <div class="item-row"><span>পরিসংখ্যানীয় বলবিজ্ঞান</span><span class="timer-display" id="time-h4">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('h4', 'পরিসংখ্যানীয় বলবিজ্ঞান')">Live</button></div>
-                    <div class="item-row"><span>কম্পিউটার অ্যাপ্লিকেশন</span><span class="timer-display" id="time-h5">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('h5', 'কম্পিউটার অ্যাপ্লিকেশন')">Live</button></div>
-                    <div class="item-row"><span>কঠিন অবস্থার পদার্থবিজ্ঞান-১</span><span class="timer-display" id="time-h6">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('h6', 'কঠিন অবস্থার পদার্থবিজ্ঞান-১')">Live</button></div>
-                    <div class="item-row"><span>পারমাণবিক ও আণবিক ফিজিক্স</span><span class="timer-display" id="time-h7">00:00:00</span><button class="btn-timer" onclick="launchLiveTimer('h7', 'পারমাণবিক ও আণবিক ফিজিক্স')">Live</button></div>
-                </div>
-
-                <!-- Workouts & Brain Games -->
-                <div class="card">
-                    <h2><i class="fa-solid fa-dumbbell" style="color: var(--accent-color);"></i> শারীরিক ব্যায়াম ট্র্যাকিং</h2>
-                    <div class="item-row"><span>সকাল (৬:০০ - ৬:৩০)</span><input type="checkbox" id="work-morn" onchange="toggleCheckbox('work-morn', 15)"></div>
-                    <div class="item-row"><span>বিকেল (৫:০০ - ৫:৩০)</span><input type="checkbox" id="work-eve" onchange="toggleCheckbox('work-eve', 15)"></div>
-
-                    <h2 style="margin-top:20px; font-size:15px;"><i class="fa-solid fa-brain" style="color:var(--primary-glow)"></i> ব্রেন রিফ্লেক্স ল্যাব</h2>
-                    <div class="game-panel">
-                        <div id="game-target" onclick="clickGameTarget()">READY</div>
-                        <div id="g1-score" style="font-size: 12px; text-align: center; margin-top:5px;">স্কোর: ০</div>
-                    </div>
+                    <h2><span><i class="fa-solid fa-book-open" style="color: var(--success-color);"></i> পড়াশোনা ট্র্যাকার (লাইভ টাইমার)</span></h2>
+                    <div id="dynamic-subjects-container"></div>
                 </div>
             </div>
 
             <div class="summary-box">
-                <h2><i class="fa-solid fa-square-poll-vertical"></i> ডেইলি লাইভ প্রোগ্রেস</h2>
+                <h2><i class="fa-solid fa-square-poll-vertical"></i> DAILY LIVE MASTER PROGRESS</h2>
                 <div class="progress-container"><div class="progress-bar" id="master-bar"></div></div>
                 <p id="total-status-msg">আজকের লক্ষ্যমাত্রার ০% সম্পন্ন হয়েছে।</p>
             </div>
         </div>
 
-        <!-- ================= PANEL 2: COMPLETE LIFETIME LEDGER AUDITOR ================= -->
         <div id="panel-ledger" class="panel-view">
             <div class="card">
-                <h2><i class="fa-solid fa-calendar-days" style="color: var(--primary-glow);"></i> ডে-বাই-ডে ফুল ক্যালেন্ডার রিপোর্ট অডিটর</h2>
-                <p class="guide-text" style="margin-bottom: 15px;">১ বছর পর হলেও যেকোনো দিনের আসল রিপোর্ট দেখতে নিচে তারিখ সিলেক্ট করুন:</p>
+                <h2><span><i class="fa-solid fa-calendar-days" style="color: var(--primary-glow);"></i> ডে-বাই-ডে ফুল ক্যালেন্ডার রিপোর্ট অডিটর</span></h2>
+                <p class="guide-text" style="margin-bottom: 15px;">যেকোনো দিনের হিস্ট্রি দেখতে নিচে ক্যালেন্ডার থেকে তারিখ সিলেক্ট করুন:</p>
                 
                 <div class="date-picker-box">
-                    <label for="audit-date-picker" style="font-size:14px; font-weight:bold;"><i class="fa-solid fa-search"></i> তারিখ নির্ধারণ করুন:</label>
-                    <input type="date" id="audit-date-picker" class="cyber-date-input" onchange="auditSelectedDateData()">
+                    <label for="audit-date-picker" style="font-size:14px; font-weight:bold;"><i class="fa-solid fa-search"></i> তারিখ সিলেক্ট করুন:</label>
+                    <input type="date" id="audit-date-picker" class="cyber-date-input" onchange="window.auditSelectedDateData()">
                 </div>
 
                 <div class="audit-grid">
-                    <!-- Study Report Leaf -->
                     <div class="audit-card">
                         <div class="audit-title"><i class="fa-solid fa-book"></i> পড়াশোনা হিস্ট্রি</div>
                         <div id="audit-study-output" style="font-size:14px; color:#fff;">তারিখ সিলেক্ট করুন...</div>
                     </div>
-                    <!-- Namaz Report Leaf -->
                     <div class="audit-card">
-                        <div class="audit-title"><i class="fa-solid fa-mosque" style="color:var(--success-color)"></i> নামাজ হিস্ট্রি</div>
+                        <div class="audit-title"><i class="fa-solid fa-mosque"></i> নামাজ রেকর্ড</div>
                         <div id="audit-namaz-output" style="font-size:14px; color:#fff;">তারিখ সিলেক্ট করুন...</div>
                     </div>
-                    <!-- Workout Report Leaf -->
                     <div class="audit-card">
-                        <div class="audit-title"><i class="fa-solid fa-dumbbell" style="color:var(--accent-color)"></i> কসরত ও থেরাপি</div>
+                        <div class="audit-title"><i class="fa-solid fa-heart-pulse"></i> থেরাপি ও কসরত ট্র্যাকিং</div>
                         <div id="audit-workout-output" style="font-size:14px; color:#fff;">তারিখ সিলেক্ট করুন...</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Global Archive Ledger Roll -->
             <div class="card">
-                <h2><i class="fa-solid fa-database" style="color: var(--secondary-glow);"></i> অল-টাইম গ্লোবাল হিস্ট্রি লেজার (আর্কাইভ)</h2>
-                <p class="guide-text" style="margin-bottom:10px;">নিচে প্রথম দিন থেকে আজ পর্যন্ত ডেটা অটো সেভ হয়ে ক্রমান্বয়ে জমা হচ্ছে:</p>
-                <div class="history-scroll-box" id="global-history-rows">
-                    <!-- Dynamic historical list rows inject here -->
-                </div>
+                <h2><span><i class="fa-solid fa-database" style="color: var(--secondary-glow);"></i> অল-টাইম গ্লোবাল হিস্ট্রি লেজার (আর্কাইভ)</span></h2>
+                <div class="history-scroll-box" id="global-history-rows"></div>
             </div>
         </div>
 
-    </div>
+        <div id="panel-settings" class="panel-view">
+            <div class="card">
+                <h2><span><i class="fa-solid fa-user-gear" style="color: var(--primary-glow);"></i> প্রোফাইল কাস্টমাইজেশন প্যানেল</span></h2>
+                <div class="form-group">
+                    <label>আপনার সম্পূর্ণ নাম:</label>
+                    <input type="text" id="cfg-name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>ডিপার্টমেন্ট / কলেজের বিবরণ:</label>
+                    <input type="text" id="cfg-dept" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>প্রোফাইল পিকচার (গুগল ড্রাইভ লিংক বা ডিরেক্ট ইমেজ ইউআরএল):</label>
+                    <input type="text" id="cfg-img" class="form-control" placeholder="ড্রাইভের শেয়ার লিংক এখানে পেস্ট করুন">
+                </div>
+                <button class="nav-btn" style="background:var(--primary-glow); color:#000; font-weight:bold; width:100%; justify-content:center;" onclick="window.saveProfileData()"><i class="fa-solid fa-user-check"></i> প্রোফাইল ডেটা আপডেট করুন</button>
+            </div>
 
-    <script>
-        // Lifetime Core Permanent Matrix Database Configuration
-        // Dynamic structure: ledgerDB[dateKey] = { subjects: {}, namaz: {}, workoutMorn: false, workoutEve: false, bookRead: false }
-        let ledgerDB = JSON.parse(localStorage.getItem('sohan_ledger_db')) || {};
-        
-        let totalExp = parseInt(localStorage.getItem('sohan_totalExp')) || 0;
-        let userCustomPassword = localStorage.getItem('sohan_customPassword') || "1234";
+            <div class="card">
+                <h2><span><i class="fa-solid fa-book" style="color:var(--success-color);"></i> ডাইনামিক সাবজেক্ট ম্যানেজার (কমানো/বাড়ানো)</span></h2>
+                <div class="flex-input-group">
+                    <input type="text" id="new-subject-name" class="form-control" placeholder="নতুন বিষয়ের নাম লিখুন">
+                    <button class="nav-btn" style="background:var(--success-color); color:#000; font-weight:bold; white-space:nowrap;" onclick="window.addCustomSubject()"><i class="fa-solid fa-plus"></i> অ্যাড করুন</button>
+                </div>
+                <label style="font-size:12px; color:#8b949e; font-weight:bold;">বর্তমান সাবজেক্ট লিস্ট:</label>
+                <div id="settings-subject-list" class="badge-list"></div>
+            </div>
+
+            <div class="card">
+                <h2><span><i class="fa-solid fa-dumbbell" style="color:var(--warning-color);"></i> কাস্টম থেরাপি ও অভ্যাস ম্যানেজার</span></h2>
+                <div class="flex-input-group">
+                    <input type="text" id="new-habit-name" class="form-control" placeholder="অভ্যাস বা ব্যায়ামের নাম" style="flex:2;">
+                    <input type="number" id="new-habit-target" class="form-control" placeholder="লক্ষ্যমাত্রা (যেমন: ১০)" style="flex:1;">
+                    <button class="nav-btn" style="background:var(--warning-color); color:#000; font-weight:bold; white-space:nowrap;" onclick="window.addCustomHabit()"><i class="fa-solid fa-plus"></i> অ্যাড করুন</button>
+                </div>
+                <label style="font-size:12px; color:#8b949e; font-weight:bold;">বর্তমান অভ্যাস লিস্ট:</label>
+                <div id="settings-habit-list" class="badge-list"></div>
+            </div>
+        </div>
+    </div>
+       <script>
+        window.ledgerDB = JSON.parse(localStorage.getItem('sohan_ledger_db')) || {};
+        window.totalExp = parseInt(localStorage.getItem('sohan_totalExp')) || 0;
+
+        const defaultUserConfig = {
+            name: "Mohammad Sohan Mridha",
+            dept: "অনার্স ৩য় বর্ষ (ফিজিক্স) | পটুয়াখালী সরকারি কলেজ",
+            imgUrl: "",
+            subjects: ["বলবিদ্যা", "তাপ গতিবিদ্যা", "গণিতীয় পদার্থবিজ্ঞান", "তড়িৎ-গতিবিজ্ঞান", "কোয়ান্টাম মেকানিক্স-১"],
+            habits: [
+                { name: "কসরত-১", target: 10 },
+                { name: "কসরত-২", target: 10 },
+                { name: "বই পড়া (২০ মিনিট)", target: 1 }
+            ]
+        };
+
+        window.userConfig = JSON.parse(localStorage.getItem('universal_user_config')) || defaultUserConfig;
+
+        if(!Array.isArray(window.userConfig.subjects)) window.userConfig.subjects = [...defaultUserConfig.subjects];
+        if(!Array.isArray(window.userConfig.habits)) window.userConfig.habits = [...defaultUserConfig.habits];
 
         let mainInterval = null;
-        let activeTimerSubjectId = null;
-        let activeTimerSubjectName = "";
+        let activeTimerSubject = null;
+        let activeDeltaSeconds = 0;
 
-        // Standard Engine Date Formatter
         function getTodayDateString() {
             let d = new Date();
-            let month = '' + (d.getMonth() + 1);
-            let day = '' + d.getDate();
-            let year = d.getFullYear();
-            if (month.length < 2) month = '0' + month;
-            if (day.length < 2) day = '0' + day;
+            let month = '' + (d.getMonth() + 1); let day = '' + d.getDate(); let year = d.getFullYear();
+            if (month.length < 2) month = '0' + month; if (day.length < 2) day = '0' + day;
             return [year, month, day].join('-');
         }
 
-        // Initialize node structures safely inside the engine
         function verifyDateNode(dateKey) {
-            if (!ledgerDB[dateKey]) {
-                ledgerDB[dateKey] = {
-                    subjects: {
-                        imp1: 0, imp2: 0, h1: 0, h2: 0, h3: 0, h4: 0, h5: 0, h6: 0, h7: 0
-                    },
+            if (!window.ledgerDB[dateKey]) {
+                window.ledgerDB[dateKey] = {
+                    subjects: {},
                     namaz: { fajr: "none", dhuhr: "none", asr: "none", maghrib: "none", isha: "none" },
-                    workoutMorn: false,
-                    workoutEve: false,
-                    bookRead: false
+                    habits: {}
                 };
             }
+            if(!window.ledgerDB[dateKey].subjects) window.ledgerDB[dateKey].subjects = {};
+            if(!window.ledgerDB[dateKey].namaz) window.ledgerDB[dateKey].namaz = { fajr: "none", dhuhr: "none", asr: "none", maghrib: "none", isha: "none" };
+            if(!window.ledgerDB[dateKey].habits) window.ledgerDB[dateKey].habits = {};
+
+            window.userConfig.subjects.forEach(sub => {
+                if (window.ledgerDB[dateKey].subjects[sub] === undefined) window.ledgerDB[dateKey].subjects[sub] = 0;
+            });
+            window.userConfig.habits.forEach(h => {
+                if (window.ledgerDB[dateKey].habits[h.name] === undefined) window.ledgerDB[dateKey].habits[h.name] = 0;
+            });
         }
 
-        function validateLogin() {
-            if(document.getElementById('pass-field').value === userCustomPassword) unlockDashboard();
-            else alert("ভুল সিকিউরিটি পাসওয়ার্ড!");
-        }
-
-        function secureGmailLoginEngine() {
-            let email = prompt("আপনার Google Gmail অ্যাকাউন্ট এন্টার করুন:");
-            if(email && email.includes("@gmail.com")) {
-                document.getElementById('user-display-name').innerText = `Sohan Mridha (${email})`;
-                unlockDashboard();
-            } else { alert("সঠিক জিমেইল আইডি প্রদান করুন।"); }
-        }
-
-        function unlockDashboard() {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('dashboard-wrapper').style.display = 'block';
-            initDashboardHub();
-        }
-
-        function switchPanelView(viewKey) {
+        window.switchPanelView = function(viewKey) {
             document.querySelectorAll('.panel-view').forEach(p => p.classList.remove('active-view'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             
             document.getElementById(`panel-${viewKey}`).classList.add('active-view');
-            document.getElementById(`btn-${viewKey}`).classList.add('active');
+            let activeBtn = document.getElementById(`btn-${viewKey}`);
+            if(activeBtn) activeBtn.classList.add('active');
 
             if(viewKey === 'ledger') {
                 document.getElementById('audit-date-picker').value = getTodayDateString();
                 auditSelectedDateData();
                 renderGlobalArchiveLedger();
             }
+            if(viewKey === 'settings') {
+                loadSettingsPanel();
+            }
+        }
+
+        function cleanDriveImageUrl(url) {
+            if(!url) return "";
+            if(url.includes("drive.google.com")) {
+                let parts = url.split('/file/d/');
+                if(parts.length > 1) {
+                    let id = parts[1].split('/')[0];
+                    return `https://docs.google.com/uc?export=download&id=${id}`;
+                }
+                let idMatch = url.match(/id=([^&]+)/);
+                if(idMatch && idMatch[1]) {
+                    return `https://docs.google.com/uc?export=download&id=${idMatch[1]}`;
+                }
+            }
+            return url;
+        }
+
+        function drawProfileAvatar() {
+            let container = document.getElementById('avatar-container');
+            if(!container) return;
+            
+            let finalImg = cleanDriveImageUrl(window.userConfig.imgUrl);
+            if(finalImg && finalImg.trim() !== "") {
+                container.innerHTML = `<img src="${finalImg}" class="profile-img" alt="User" onerror="fallbackAvatar()">`;
+            } else {
+                fallbackAvatar();
+            }
+        }
+
+        function fallbackAvatar() {
+            let firstChar = window.userConfig.name ? window.userConfig.name.trim().charAt(0) : "M";
+            let container = document.getElementById('avatar-container');
+            if(container) container.innerHTML = `<div class="profile-avatar-text">${firstChar}</div>`;
+        }
+
+        function renderHomeDynamicStructures() {
+            let today = getTodayDateString();
+            verifyDateNode(today);
+            let todayData = window.ledgerDB[today];
+
+            let subContainer = document.getElementById('dynamic-subjects-container');
+            if(subContainer) {
+                subContainer.innerHTML = "";
+                window.userConfig.subjects.forEach(sub => {
+                    let currentSec = todayData.subjects[sub] || 0;
+                    let safeId = btoa(encodeURIComponent(sub)).replace(/=/g, "");
+                    subContainer.innerHTML += `
+                        <div class="item-row dynamic-subject">
+                            <span>${sub}</span>
+                            <div>
+                                <span class="timer-display" id="time-${safeId}">${formatString(currentSec)}</span>
+                                <button class="btn-timer" onclick="window.launchLiveTimer('${sub.replace(/'/g, "\\'")}')">Live</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            let habitContainer = document.getElementById('dynamic-habits-container');
+            if(habitContainer) {
+                habitContainer.innerHTML = "";
+                window.userConfig.habits.forEach(h => {
+                    let currentVal = todayData.habits[h.name] || 0;
+                    let safeId = btoa(encodeURIComponent(h.name)).replace(/=/g, "");
+                    if(parseInt(h.target) === 1) {
+                        let isChecked = currentVal >= 1 ? 'checked' : '';
+                        habitContainer.innerHTML += `
+                            <div class="item-row therapy">
+                                <span>${h.name}</span>
+                                <input type="checkbox" id="chk-${safeId}" ${isChecked} onchange="window.toggleCheckboxHabit('${h.name.replace(/'/g, "\\'")}')" style="width:18px; height:18px; cursor:pointer;">
+                            </div>
+                        `;
+                    } else {
+                        habitContainer.innerHTML += `
+                            <div class="item-row therapy">
+                                <span>${h.name} (${h.target} বার)</span>
+                                <div>
+                                    <span id="cnt-${safeId}">${currentVal}</span>/${h.target} 
+                                    <button class="counter-btn" style="margin-left:8px;" onclick="window.countCounterHabit('${h.name.replace(/'/g, "\\'")}', ${h.target})">+</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+        }
+
+        function loadSettingsPanel() {
+            document.getElementById('cfg-name').value = window.userConfig.name || "";
+            document.getElementById('cfg-dept').value = window.userConfig.dept || "";
+            document.getElementById('cfg-img').value = window.userConfig.imgUrl || "";
+
+            let subList = document.getElementById('settings-subject-list');
+            subList.innerHTML = "";
+            window.userConfig.subjects.forEach(sub => {
+                subList.innerHTML += `
+                    <div class="config-badge">
+                        ${sub} <button class="action-del-btn" onclick="window.deleteSubject('${sub.replace(/'/g, "\\'")}')"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                `;
+            });
+
+            let habList = document.getElementById('settings-habit-list');
+            habList.innerHTML = "";
+            window.userConfig.habits.forEach(h => {
+                habList.innerHTML += `
+                    <div class="config-badge">
+                        ${h.name} (${h.target}) <button class="action-del-btn" onclick="window.deleteHabit('${h.name.replace(/'/g, "\\'")}')"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                `;
+            });
+        }
+
+        window.saveProfileData = function() {
+            window.userConfig.name = document.getElementById('cfg-name').value.trim() || "Mridha User";
+            window.userConfig.dept = document.getElementById('cfg-dept').value.trim() || "General Info";
+            window.userConfig.imgUrl = document.getElementById('cfg-img').value.trim();
+
+            localStorage.setItem('universal_user_config', JSON.stringify(window.userConfig));
+            initDashboardHub();
+            alert("প্রোফাইল তথ্য সফলভাবে সেভ হয়েছে!");
+        }
+
+        window.addCustomSubject = function() {
+            let name = document.getElementById('new-subject-name').value.trim();
+            if(!name) return;
+            if(!window.userConfig.subjects.includes(name)) {
+                window.userConfig.subjects.push(name);
+                localStorage.setItem('universal_user_config', JSON.stringify(window.userConfig));
+                document.getElementById('new-subject-name').value = "";
+                loadSettingsPanel();
+                initDashboardHub();
+            }
+        }
+
+        window.deleteSubject = function(sub) {
+            window.userConfig.subjects = window.userConfig.subjects.filter(s => s !== sub);
+            localStorage.setItem('universal_user_config', JSON.stringify(window.userConfig));
+            loadSettingsPanel();
+            initDashboardHub();
+        }
+
+        window.addCustomHabit = function() {
+            let name = document.getElementById('new-habit-name').value.trim();
+            let target = parseInt(document.getElementById('new-habit-target').value) || 1;
+            if(!name) return;
+            
+            if(!window.userConfig.habits.some(h => h.name === name)) {
+                window.userConfig.habits.push({ name: name, target: target });
+                localStorage.setItem('universal_user_config', JSON.stringify(window.userConfig));
+                document.getElementById('new-habit-name').value = "";
+                document.getElementById('new-habit-target').value = "";
+                loadSettingsPanel();
+                initDashboardHub();
+            }
+        }
+
+        window.deleteHabit = function(name) {
+            window.userConfig.habits = window.userConfig.habits.filter(h => h.name !== name);
+            localStorage.setItem('universal_user_config', JSON.stringify(window.userConfig));
+            loadSettingsPanel();
+            initDashboardHub();
         }
 
         function initDashboardHub() {
             let today = getTodayDateString();
             verifyDateNode(today);
-            saveEngineData();
 
-            // Render State parameters straight from today's active node
-            let todayData = ledgerDB[today];
-            
-            // Subjects
-            Object.keys(todayData.subjects).forEach(id => {
-                if(document.getElementById(`time-${id}`)) {
-                    document.getElementById(`time-${id}`).innerText = formatString(todayData.subjects[id]);
-                }
-            });
+            let nameEl = document.getElementById('lbl-user-name');
+            let deptEl = document.getElementById('lbl-user-dept');
+            if(nameEl) nameEl.innerText = window.userConfig.name;
+            if(deptEl) deptEl.innerHTML = `<i class="fa-solid fa-graduation-cap"></i> ${window.userConfig.dept}`;
 
-            // Namaz
+            let todayData = window.ledgerDB[today];
             Object.keys(todayData.namaz).forEach(id => {
-                if(document.getElementById(`nm-${id}`)) {
-                    document.getElementById(`nm-${id}`).value = todayData.namaz[id];
-                }
+                let nmEl = document.getElementById(`nm-${id}`);
+                if(nmEl) nmEl.value = todayData.namaz[id];
             });
 
-            // Checkboxes
-            if(document.getElementById('work-morn')) document.getElementById('work-morn').checked = todayData.workoutMorn;
-            if(document.getElementById('work-eve')) document.getElementById('work-eve').checked = todayData.workoutEve;
-            if(document.getElementById('book-chk')) document.getElementById('book-chk').checked = todayData.bookRead;
-
+            drawProfileAvatar();
+            renderHomeDynamicStructures();
             updateExpBadge();
-            runReflexGameEngine();
             calculateProgress();
-        }
-
-        function saveEngineData() {
-            localStorage.setItem('sohan_ledger_db', JSON.stringify(ledgerDB));
-            localStorage.setItem('sohan_totalExp', totalExp);
         }
 
         function updateExpBadge() {
-            let lvl = "Initiate (রুটিন নবাগত)";
-            if(totalExp >= 500) lvl = "Physics Titan (মাস্টারমাইন্ড)";
-            else if(totalExp >= 250) lvl = "Unstoppable (অদম্য সোহান)";
-            else if(totalExp >= 100) lvl = "Disciplined (শৃঙ্খলার প্রতীক)";
-            document.getElementById('user-level').innerText = `EXP: ${totalExp} | ${lvl}`;
+            let lvl = "Initiate (নবাগত)";
+            if(window.totalExp >= 1000) lvl = "Titan Mode (মাস্টারমাইন্ড)";
+            else if(window.totalExp >= 500) lvl = "Unstoppable (অদম্য)";
+            let lvlEl = document.getElementById('user-level');
+            if(lvlEl) lvlEl.innerText = `EXP: ${window.totalExp} | ${lvl}`;
         }
 
-        // Live Subject Tracking Engine
-        let activeDeltaSeconds = 0;
-        function launchLiveTimer(id, text) {
+        window.launchLiveTimer = function(subName) {
             let today = getTodayDateString();
             verifyDateNode(today);
 
-            activeTimerSubjectId = id;
-            activeTimerSubjectName = text;
+            activeTimerSubject = subName;
             activeDeltaSeconds = 0;
 
-            document.getElementById('fullscreen-title').innerText = `পড়াশোনা সেশন সচল: ${text}`;
+            document.getElementById('fullscreen-title').innerText = `পড়াশোনা সেশন সচল: ${subName}`;
             document.getElementById('fullscreen-overlay').style.display = 'flex';
+            document.getElementById('fullscreen-timer').innerText = "00:00:00";
 
             if(mainInterval) clearInterval(mainInterval);
             mainInterval = setInterval(() => {
-                ledgerDB[today].subjects[id]++;
+                window.ledgerDB[today].subjects[subName] = (window.ledgerDB[today].subjects[subName] || 0) + 1;
                 activeDeltaSeconds++;
                 
-                let currentTotal = ledgerDB[today].subjects[id];
+                localStorage.setItem('sohan_ledger_db', JSON.stringify(window.ledgerDB));
+
+                let currentTotal = window.ledgerDB[today].subjects[subName];
                 document.getElementById('fullscreen-timer').innerText = formatString(activeDeltaSeconds);
-                document.getElementById(`time-${id}`).innerText = formatString(currentTotal);
+                
+                let safeId = btoa(encodeURIComponent(subName)).replace(/=/g, "");
+                let fallbackId = document.getElementById(`time-${safeId}`);
+                if(fallbackId) fallbackId.innerText = formatString(currentTotal);
             }, 1000);
         }
 
-        function exitFullscreen() {
-            if(mainInterval) { clearInterval(mainInterval); mainInterval = null; }
+        window.exitFullscreen = function() {
+            if(mainInterval) { 
+                clearInterval(mainInterval); 
+                mainInterval = null; 
+            }
             document.getElementById('fullscreen-overlay').style.display = 'none';
 
-            totalExp += Math.round(activeDeltaSeconds / 60) + 20; // 20 flat points + 1 point per minute
+            if (activeDeltaSeconds > 0) {
+                let earnedExp = Math.round(activeDeltaSeconds / 60) + 15;
+                window.totalExp += earnedExp;
+                localStorage.setItem('sohan_totalExp', window.totalExp);
+            }
+            
             activeDeltaSeconds = 0;
+            activeTimerSubject = null;
 
-            saveEngineData();
-            updateExpBadge();
-            calculateProgress();
+            localStorage.setItem('sohan_ledger_db', JSON.stringify(window.ledgerDB));
+            initDashboardHub();
         }
 
         function formatString(s) {
@@ -708,132 +900,121 @@
             return `${h<10?'0':''}${h}:${m<10?'0':''}${m}:${sec<10?'0':''}${sec}`;
         }
 
-        // Live Form Field Trackers (Syncs on runtime dynamically into active index nodes)
-        function trackNamaz(id) {
-            let today = getTodayDateString();
-            verifyDateNode(today);
-            ledgerDB[today].namaz[id] = document.getElementById(`nm-${id}`).value;
-            totalExp += 10;
-            saveEngineData();
-            updateExpBadge();
-            calculateProgress();
+        window.trackNamaz = function(id) {
+            let today = getTodayDateString(); verifyDateNode(today);
+            let nmEl = document.getElementById(`nm-${id}`);
+            if(nmEl) {
+                window.ledgerDB[today].namaz[id] = nmEl.value;
+                window.totalExp += 15; 
+                localStorage.setItem('sohan_ledger_db', JSON.stringify(window.ledgerDB)); 
+                localStorage.setItem('sohan_totalExp', window.totalExp);
+                updateExpBadge(); calculateProgress();
+            }
+        }
+            window.toggleCheckboxHabit = function(name) {
+            let today = getTodayDateString(); verifyDateNode(today);
+            let safeId = btoa(encodeURIComponent(name)).replace(/=/g, "");
+            let targetChk = document.getElementById(`chk-${safeId}`);
+            let state = targetChk ? targetChk.checked : false;
+            
+            window.ledgerDB[today].habits[name] = state ? 1 : 0;
+            window.totalExp += state ? 20 : -20; 
+            
+            localStorage.setItem('sohan_ledger_db', JSON.stringify(window.ledgerDB)); 
+            localStorage.setItem('sohan_totalExp', window.totalExp);
+            updateExpBadge(); calculateProgress();
         }
 
-        function toggleCheckbox(id, pts) {
-            let today = getTodayDateString();
-            verifyDateNode(today);
-
-            let state = document.getElementById(id).checked;
-            if(id === 'work-morn') ledgerDB[today].workoutMorn = state;
-            if(id === 'work-eve') ledgerDB[today].workoutEve = state;
-            if(id === 'book-chk') ledgerDB[today].bookRead = state;
-
-            totalExp += state ? pts : -pts;
-            saveEngineData();
-            updateExpBadge();
-            calculateProgress();
-        }
-
-        function countTherapy(id, max) {
-            let node = document.getElementById(id);
-            let v = parseInt(node.innerText);
-            if(v < max) { v++; node.innerText = v; if(v === max) { totalExp += 15; saveEngineData(); updateExpBadge(); } }
+        window.countCounterHabit = function(name, max) {
+            let today = getTodayDateString(); verifyDateNode(today);
+            let currentVal = window.ledgerDB[today].habits[name] || 0;
+            
+            if(currentVal < max) { 
+                currentVal++; 
+                window.ledgerDB[today].habits[name] = currentVal;
+                let safeId = btoa(encodeURIComponent(name)).replace(/=/g, "");
+                let cntEl = document.getElementById(`cnt-${safeId}`);
+                if(cntEl) cntEl.innerText = currentVal;
+                
+                if(currentVal === max) { 
+                    window.totalExp += 30; 
+                    localStorage.setItem('sohan_totalExp', window.totalExp); 
+                } 
+                localStorage.setItem('sohan_ledger_db', JSON.stringify(window.ledgerDB));
+                updateExpBadge(); calculateProgress();
+            }
         }
 
         function calculateProgress() {
-            let today = getTodayDateString();
-            let d = ledgerDB[today];
-            let count = 0;
-            if(d) {
-                Object.keys(d.namaz).forEach(k => { if(d.namaz[k] !== 'none') count++; });
-                if(d.workoutMorn) count++; if(d.workoutEve) count++; if(d.bookRead) count++;
+            let today = getTodayDateString(); let d = window.ledgerDB[today]; 
+            if(!d) return;
+            
+            let totalTasks = 5 + window.userConfig.habits.length; 
+            let completedTasks = 0;
+            
+            if(d.namaz) {
+                Object.keys(d.namaz).forEach(k => { if(d.namaz[k] !== 'none') completedTasks++; });
             }
-            let percent = Math.min(100, Math.round((count / 8) * 100));
-            document.getElementById('master-bar').style.width = percent + '%';
-            document.getElementById('total-status-msg').innerText = `আজকের লক্ষ্যমাত্রার ${percent}% সম্পন্ন হয়েছে।`;
-        }
+            window.userConfig.habits.forEach(h => {
+                let v = (d.habits && d.habits[h.name]) || 0;
+                if(v >= h.target) completedTasks++;
+            });
 
-        // Reflex Game Core
-        let greenFlag = false; let reflexScore = 0;
-        function runReflexGameEngine() {
-            let tgt = document.getElementById('game-target');
-            if(!tgt) return;
-            if(Math.random() > 0.6) { tgt.style.backgroundColor = '#00ff87'; tgt.innerText = "CLICK NOW!"; greenFlag = true; }
-            else { tgt.style.backgroundColor = '#ff007f'; tgt.innerText = "WAIT"; greenFlag = false; }
-            setTimeout(runReflexGameEngine, 2500);
+            let percent = Math.min(100, Math.round((completedTasks / totalTasks) * 100)) || 0;
+            let mBar = document.getElementById('master-bar');
+            let mMsg = document.getElementById('total-status-msg');
+            if(mBar) mBar.style.width = percent + '%';
+            if(mMsg) mMsg.innerText = `আজকের লক্ষ্যমাত্রার ${percent}% সম্পন্ন হয়েছে।`;
         }
-        function clickGameTarget() {
-            if(greenFlag) { reflexScore += 10; totalExp += 5; greenFlag = false; }
-            else { reflexScore = Math.max(0, reflexScore - 5); }
-            document.getElementById('g1-score').innerText = "স্কোর: " + reflexScore;
-            saveEngineData(); updateExpBadge();
-        }
-
-        // ================= LIFETIME REALT-TIME HISTORY AUDITING LOGIC =================
-        const subjectNamesMapping = {
-            imp1: "বলবিদ্যা", imp2: "তাপ গতিবিদ্যা",
-            h1: "গণিতীয় পদার্থবিজ্ঞান", h2: "তড়িৎ-গতিবিজ্ঞান", h3: "কোয়ান্টাম মেকানিক্স-১",
-            h4: "পরিসংখ্যানীয় বলবিজ্ঞান", h5: "কম্পিউটার অ্যাপ্লিকেশন", h6: "কঠিন অবস্থার পদার্থবিজ্ঞান-১",
-            h7: "পারমাণবিক ও আণবিক ফিজিক্স"
-        };
 
         const namazNamesMapping = { fajr: "ফজর", dhuhr: "যোহর", asr: "আসর", maghrib: "মাগরিব", isha: "ইশা" };
         const namazStatusMapping = { none: "❌ পড়া হয়নি", mosque: "🕌 জামায়াতে", home: "🏠 ঘরে একা" };
 
-        function auditSelectedDateData() {
+        window.auditSelectedDateData = function() {
             let selectedDate = document.getElementById('audit-date-picker').value;
             let sOut = document.getElementById('audit-study-output');
             let nOut = document.getElementById('audit-namaz-output');
             let wOut = document.getElementById('audit-workout-output');
 
             if(!selectedDate) return;
-
-            let dayRecord = ledgerDB[selectedDate];
+            let dayRecord = window.ledgerDB[selectedDate];
 
             if(!dayRecord) {
-                sOut.innerHTML = "<span style='color:#8b949e;'>কোনো ট্র্যাকিং রেকর্ড পাওয়া যায়নি।</span>";
-                nOut.innerHTML = "<span style='color:#8b949e;'>কোনো ট্র্যাকিং রেকর্ড পাওয়া যায়নি।</span>";
-                wOut.innerHTML = "<span style='color:#8b949e;'>কোনো ট্র্যাকিং রেকর্ড পাওয়া যায়নি।</span>";
+                sOut.innerHTML = nOut.innerHTML = wOut.innerHTML = "<span style='color:#8b949e;'>কোনো ট্র্যাকিং রেকর্ড পাওয়া যায়নি।</span>";
                 return;
             }
 
-            // 1. Audit Study Data Strings
-            let studyHTML = "<ul style='padding-left:15px; margin-top:5px;'>";
-            let studiedAnything = false;
-            Object.keys(dayRecord.subjects).forEach(id => {
-                if(dayRecord.subjects[id] > 0) {
-                    studiedAnything = true;
-                    studyHTML += `<li style='margin-bottom:4px;'><b>${subjectNamesMapping[id] || id}:</b> ${formatString(dayRecord.subjects[id])}</li>`;
-                }
-            });
-            studyHTML += "</ul>";
-            sOut.innerHTML = studiedAnything ? studyHTML : "ঐদিন পড়াশোনা ট্র্যাক করা হয়নি।";
+            let studyHTML = "<ul style='padding-left:15px; line-height:1.6;'>"; let studiedAnything = false;
+            if(dayRecord.subjects) {
+                Object.keys(dayRecord.subjects).forEach(id => {
+                    if(dayRecord.subjects[id] > 0) {
+                        studiedAnything = true;
+                        studyHTML += `<li><b>${id}:</b> ${formatString(dayRecord.subjects[id])}</li>`;
+                    }
+                });
+            }
+            sOut.innerHTML = studiedAnything ? studyHTML + "</ul>" : "ঐদিন পড়াশোনা ট্র্যাক করা হয়নি।";
 
-            // 2. Audit Namaz Data
-            let namazHTML = "<ul style='padding-left:15px; margin-top:5px;'>";
-            Object.keys(dayRecord.namaz).forEach(id => {
-                let statusVal = dayRecord.namaz[id] || "none";
-                namazHTML += `<li style='margin-bottom:4px;'><b>${namazNamesMapping[id]}:</b> ${namazStatusMapping[statusVal]}</li>`;
-            });
-            namazHTML += "</ul>";
-            nOut.innerHTML = namazHTML;
+            let namazHTML = "<ul style='padding-left:15px; line-height:1.6;'>";
+            if(dayRecord.namaz) {
+                Object.keys(dayRecord.namaz).forEach(id => { namazHTML += `<li><b>${namazNamesMapping[id]}:</b> ${namazStatusMapping[dayRecord.namaz[id] || 'none']}</li>`; });
+            }
+            nOut.innerHTML = namazHTML + "</ul>";
 
-            // 3. Audit Workouts Checkboxes
-            wOut.innerHTML = `
-                <div style='line-height: 1.6; margin-top:5px;'>
-                    • সকালের ব্যায়াম: ${dayRecord.workoutMorn ? '✅ সম্পন্ন' : '❌ করা হয়নি'}<br>
-                    • বিকেলের ব্যায়াম: ${dayRecord.workoutEve ? '✅ সম্পন্ন' : '❌ করা হয়নি'}<br>
-                    • ২০ মিনিট বই পড়া: ${dayRecord.bookRead ? '✅ সম্পন্ন' : '❌ করা হয়নি'}
-                </div>
-            `;
+            let habitHTML = "<ul style='padding-left:15px; line-height:1.6;'>"; let habitTracked = false;
+            if(dayRecord.habits) {
+                Object.keys(dayRecord.habits).forEach(name => {
+                    habitTracked = true;
+                    habitHTML += `<li><b>${name}:</b> ${dayRecord.habits[name]} বার রেকর্ডকৃত</li>`;
+                });
+            }
+            wOut.innerHTML = habitTracked ? habitHTML + "</ul>" : "কোনো অভ্যাস ট্র্যাকিং ডাটা নেই।";
         }
 
         function renderGlobalArchiveLedger() {
-            let container = document.getElementById('global-history-rows');
-            if(!container) return;
+            let container = document.getElementById('global-history-rows'); if(!container) return;
             container.innerHTML = "";
-
-            let sortedDates = Object.keys(ledgerDB).sort((a,b) => new Date(b) - new Date(a));
+            let sortedDates = Object.keys(window.ledgerDB).sort((a,b) => new Date(b) - new Date(a));
 
             if(sortedDates.length === 0) {
                 container.innerHTML = "<div style='text-align:center; padding:20px; color:#8b949e;'>আর্কাইভ ডাটাবেজ খালি!</div>";
@@ -841,35 +1022,33 @@
             }
 
             sortedDates.forEach(dateStr => {
-                let dNode = ledgerDB[dateStr];
-                
-                // Calc total study time for summary row label
-                let totalSecs = 0;
-                Object.keys(dNode.subjects).forEach(k => totalSecs += dNode.subjects[k]);
-                let hoursStr = (totalSecs / 3600).toFixed(1);
-
-                // Calc prayers read
-                let pCount = 0;
-                Object.keys(dNode.namaz).forEach(k => { if(dNode.namaz[k] !== 'none') pCount++; });
-
+                let dNode = window.ledgerDB[dateStr];
+                let totalSecs = 0; 
+                if(dNode.subjects) Object.keys(dNode.subjects).forEach(k => totalSecs += dNode.subjects[k]);
+                let pCount = 0; 
+                if(dNode.namaz) Object.keys(dNode.namaz).forEach(k => { if(dNode.namaz[k] !== 'none') pCount++; });
                 let formattedDateLabel = new Date(dateStr).toLocaleDateString('bn-BD', { year:'numeric', month: 'short', day: 'numeric' });
 
                 container.innerHTML += `
                     <div class="history-row">
                         <span style="font-weight:bold; color:var(--primary-glow);"><i class="fa-solid fa-calendar-day"></i> ${formattedDateLabel}</span>
-                        <span>📚 ${hoursStr} ঘণ্টা পড়া</span>
+                        <span>📚 ${(totalSecs / 3600).toFixed(1)} ঘণ্টা পড়া</span>
                         <span>🕌 ${pCount}/৫ ওয়াক্ত</span>
-                        <button class="counter-btn" style="padding:2px 8px; font-size:11px;" onclick="viewTargetArchiveDate('${dateStr}')">রিপোর্ট দেখুন</button>
+                        <button class="counter-btn" style="padding:2px 8px; font-size:11px;" onclick="window.viewTargetArchiveDate('${dateStr}')">রিপোর্ট অডিট</button>
                     </div>
                 `;
             });
         }
 
-        function viewTargetArchiveDate(dateStr) {
+        window.viewTargetArchiveDate = function(dateStr) {
             document.getElementById('audit-date-picker').value = dateStr;
-            auditSelectedDateData();
+            window.auditSelectedDateData();
             document.getElementById('audit-date-picker').scrollIntoView({ behavior: 'smooth' });
         }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initDashboardHub();
+        });
     </script>
 </body>
 </html>
