@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mridha Workspace Pro - Ultimate Lifestyle Ecosystem</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #131a26;
+            --primary-glow: #3b82f6;
+            --primary-rgb: 59, 130, 246;
+            --accent-color: #ef4444;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --border-color: #1e293b;
+            --nav-bg: rgba(9, 13, 22, 0.85);
+            --glass-blur: blur(20px);
+        }
+
+        [data-theme="luxury"] {
+            --bg-color: #0f0d0a;
+            --card-bg: #1c1812;
+            --primary-glow: #d4af37;
+            --primary-rgb: 212, 175, 55;
+            --accent-color: #ff6b6b;
+            --success-color: #4cd137;
+            --warning-color: #e1b12c;
+            --text-main: #f5f6fa;
+            --text-muted: #a4b0be;
+            --border-color: #2f2519;
+            --nav-bg: rgba(10, 8, 6, 0.85);
+        }
+
+        [data-theme="cyberpunk"] {
+            --bg-color: #050510;
+            --card-bg: #0b0b1a;
+            --primary-glow: #00ffcc;
+            --primary-rgb: 0, 255, 204;
+            --accent-color: #ff00ff;
+            --success-color: #39ff14;
+            --warning-color: #fffc00;
+            --text-main: #e0e0ff;
+            --text-muted: #6b6b99;
+            --border-color: #1a1a3a;
+            --nav-bg: rgba(5, 5, 16, 0.85);
+        }
+
+        [data-theme="minimalist"] {
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --primary-glow: #111827;
+            --primary-rgb: 17, 24, 39;
+            --accent-color: #dc2626;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 110px; min-height: 100vh; transition: all 0.4s ease; font-size: 16px; }
+
+        .icon { width: 24px; height: 24px; fill: currentColor; }
+        
+        .top-meta-bar { padding: 25px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); background: rgba(0, 0, 0, 0.05); }
+        .app-title { font-weight: 800; font-size: 24px; letter-spacing: 1.5px; color: var(--primary-glow); text-transform: uppercase; }
+        .theme-toggle-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .theme-toggle-btn:hover { border-color: var(--primary-glow); box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.3); }
+
+        .date-slider { display: flex; gap: 15px; padding: 20px 30px; overflow-x: auto; }
+        .date-slider::-webkit-scrollbar { display: none; }
+        .date-bubble { min-width: 80px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
+        .date-bubble.active { background: var(--primary-glow); border-color: var(--primary-glow); box-shadow: 0 10px 20px rgba(var(--primary-rgb), 0.2); color: var(--bg-color); }
+        .date-bubble.active .month-txt { color: rgba(0, 0, 0, 0.7); }
+        .date-bubble .day-num { font-size: 24px; font-weight: 800; display: block; }
+        .date-bubble .month-txt { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+
+        .analytics-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 30px 25px 30px; }
+        .stat-widget { background: var(--card-bg); border: 1px solid var(--border-color); padding: 20px; border-radius: 18px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .stat-label { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .stat-val { font-size: 26px; font-weight: 800; margin-top: 8px; color: var(--text-main); }
+
+        .app-panel { display: none; padding: 0 30px; animation: fadeIn 0.4s ease-in-out; }
+        .app-panel.active-panel { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .subject-card, .data-card, .custom-form { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); transition: border-color 0.3s ease; }
+        .subject-card:hover { border-color: rgba(var(--primary-rgb), 0.4); }
+        .card-top-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 15px; }
+        .card-left-info { display: flex; align-items: center; gap: 20px; }
+        .sub-details h3 { font-size: 22px; margin-bottom: 6px; font-weight: 700; }
+        .sub-details p { font-size: 15px; color: var(--text-muted); }
+        
+        .play-btn { width: 60px; height: 60px; border-radius: 50%; background: var(--primary-glow); border: none; color: var(--bg-color); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; }
+        .play-btn.running { background: var(--accent-color); color: #fff; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); box-shadow: 0 0 15px var(--accent-color); } 100% { transform: scale(1); } }
+
+        .form-input, .select-input { width: 100%; background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color); color: var(--text-main); padding: 14px; border-radius: 12px; outline: none; font-size: 15px; transition: border-color 0.3s; margin-bottom: 15px; }
+        .form-input:focus, .select-input:focus { border-color: var(--primary-glow); }
+        label { display: block; font-size: 14px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; }
+        
+        .add-action-btn { background: var(--primary-glow); color: var(--bg-color); font-weight: 700; width: 100%; border: none; padding: 16px; border-radius: 14px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: opacity 0.2s; }
+        .add-action-btn:hover { opacity: 0.9; }
+
+        .motivation-box { border-left: 5px solid var(--primary-glow); padding: 20px; background: rgba(var(--primary-rgb), 0.05); border-radius: 0 16px 16px 0; margin: 20px 0; }
+        .motivation-text { font-size: 16px; line-height: 1.6; font-style: italic; color: var(--text-main); }
+
+        .progress-ring-box { position: relative; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; }
+        .progress-text { position: absolute; font-size: 15px; font-weight: 800; }
+
+        .checkbox-row { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+        .status-btn { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border-color); background: transparent; color: var(--text-main); cursor: pointer; font-weight: 600; }
+        .status-btn.active-success { background: var(--success-color); color: #fff; border-color: var(--success-color); }
+        .status-btn.active-warning { background: var(--warning-color); color: #000; border-color: var(--warning-color); }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); border-top: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(6, 1fr); padding: 15px 0; z-index: 9999; backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 12px; font-weight: 700; cursor: pointer; gap: 6px; transition: color 0.3s ease; }
+        .nav-item.active { color: var(--primary-glow); }
+        
+        .fullscreen-focus-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-color); z-index: 100000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; }
+        .fullscreen-focus-overlay.active { display: flex; }
+        .fs-timer-digits { font-family: monospace; font-size: 100px; font-weight: 900; color: var(--primary-glow); margin: 30px 0; }
+        
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 200000; }
+        .modal-box { background: var(--card-bg); padding: 30px; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; border: 1px solid var(--primary-glow); }
+
+        .chart-container { position: relative; height: 250px; width: 100%; margin-bottom: 30px; }
+        .watermark { text-align: center; font-size: 12px; color: var(--text-muted); opacity: 0.5; margin-top: 40px; text-transform: uppercase; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+    <div class="top-meta-bar">
+        <div class="app-title" id="dynamic-panel-header">STUDY WORKSPACE</div>
+        <button class="theme-toggle-btn" onclick="cycleTheme()">থিম পরিবর্তন</button>
+    </div>
+
+    <div class="date-slider" id="calendar-slider-root"></div>
+
+    <div class="analytics-strip">
+        <div class="stat-widget"><div class="stat-label">টার্গেট পূরণ</div><div class="stat-val" id="global-progress-lbl">0%</div></div>
+        <div class="stat-widget"><div class="stat-label">অ্যাক্টিভ সময়</div><div class="stat-val" id="global-time-lbl">0h 0m</div></div>
+    </div>
+
+    <div id="panel-study" class="app-panel active-panel">
+        <div id="subject-cards-root"></div>
+        <div class="motivation-box">
+            <div class="motivation-text" id="study-motivation-text"></div>
+        </div>
+        <div class="custom-form">
+            <h3>নতুন বিষয় যোগ করুন</h3>
+            <label>বিষয়ের নাম</label>
+            <input type="text" id="cfg-sub-name" placeholder="যেমন: SSC 26 Super MCQ Practice" class="form-input">
+            <label>টার্গেট সময় (মিনিট)</label>
+            <input type="number" id="cfg-sub-target" placeholder="যেমন: ১২০" class="form-input">
+            <button class="add-action-btn" onclick="addNewSubject()">যুক্ত করুন</button>
+        </div>
+    </div>
+
+    <div id="panel-prayer" class="app-panel">
+        <div class="motivation-box">
+            <div class="motivation-text" id="prayer-motivation-text"></div>
+        </div>
+        <div id="prayer-tracker-root"></div>
+        <div class="custom-form" style="margin-top: 30px;">
+            <h3>নামাজের কাস্টম সময়</h3>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                <div><label>ফজর</label><input type="time" id="pr-fajr" class="form-input" onchange="savePrayerConfig()"></div>
+                <div><label>যোহর</label><input type="time" id="pr-dhuhr" class="form-input" onchange="savePrayerConfig()"></div>
+                <div><label>আসর</label><input type="time" id="pr-asr" class="form-input" onchange="savePrayerConfig()"></div>
+                <div><label>মাগরিব</label><input type="time" id="pr-maghrib" class="form-input" onchange="savePrayerConfig()"></div>
+                <div><label>ইশা</label><input type="time" id="pr-isha" class="form-input" onchange="savePrayerConfig()"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="panel-habits" class="app-panel">
+        <div id="habits-list-root"></div>
+        <div class="custom-form">
+            <h3>নতুন অভ্যাস যোগ করুন</h3>
+            <input type="text" id="habit-name" placeholder="যেমন: বই পড়া" class="form-input">
+            <select id="habit-schedule" class="select-input">
+                <option value="day">দিনের বেলা</option>
+                <option value="night">রাতের বেলা</option>
+                <option value="both">যেকোনো সময়</option>
+            </select>
+            <button class="add-action-btn" onclick="addHabit()">যুক্ত করুন</button>
+        </div>
+    </div>
+
+    <div id="panel-fitness" class="app-panel">
+        <div class="motivation-box">
+            <div class="motivation-text" id="fitness-benefit-text"></div>
+        </div>
+        <div id="fitness-list-root"></div>
+        <div class="custom-form">
+            <h3>ব্যায়াম যোগ করুন</h3>
+            <input type="text" id="fit-name" placeholder="যেমন: পুশ-আপ" class="form-input">
+            <select id="fit-type" class="select-input">
+                <option value="reps">রেপস/সেট (সংখ্যা)</option>
+                <option value="timer">টাইমার (মিনিট)</option>
+            </select>
+            <input type="number" id="fit-target" placeholder="টার্গেট (সংখ্যা বা মিনিট)" class="form-input">
+            <button class="add-action-btn" onclick="addFitness()">যুক্ত করুন</button>
+        </div>
+    </div>
+
+    <div id="panel-routine" class="app-panel">
+        <div class="data-card">
+            <h3 style="color:var(--primary-glow); margin-bottom: 15px;">আজকের লাইভ শিডিউল</h3>
+            <div id="today-routine-live"></div>
+        </div>
+        <div class="custom-form">
+            <h3>রুটিন সেট করুন</h3>
+            <select id="rt-day" class="select-input">
+                <option value="শনিবার">শনিবার</option><option value="রবিবার">রবিবার</option><option value="সোমবার">সোমবার</option>
+                <option value="মঙ্গলবার">মঙ্গলবার</option><option value="বুধবার">বুধবার</option><option value="বৃহস্পতিবার">বৃহস্পতিবার</option>
+                <option value="শুক্রবার">শুক্রবার</option>
+            </select>
+            <label>রান্না (দুপুর)</label><input type="text" id="rt-cook-day" class="form-input" placeholder="নাম">
+            <label>রান্না (রাত)</label><input type="text" id="rt-cook-night" class="form-input" placeholder="নাম">
+            <label>রুম পরিষ্কার</label><input type="text" id="rt-clean" class="form-input" placeholder="নাম">
+            <label>ময়লা ফেলা</label><input type="text" id="rt-trash" class="form-input" placeholder="নাম">
+            <button class="add-action-btn" onclick="saveRoutine()">রুটিন সেভ করুন</button>
+        </div>
+    </div>
+
+    <div id="panel-report" class="app-panel">
+        <div class="data-card">
+            <h3>সাপ্তাহিক পড়াশোনা (ঘণ্টা)</h3>
+            <div class="chart-container"><canvas id="studyChart"></canvas></div>
+        </div>
+        <div class="data-card">
+            <h3>নামাজ আদায়ের হার</h3>
+            <div class="chart-container"><canvas id="prayerChart"></canvas></div>
+        </div>
+        <div class="data-card">
+            <h3>অভ্যাস ট্র্যাকিং স্কোর</h3>
+            <div class="chart-container"><canvas id="habitChart"></canvas></div>
+        </div>
+        <div class="watermark">Sohan Mridha - 10MS Affiliate</div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active" id="nav-study" onclick="switchTab('study', 'Study Workspace')">
+            <svg class="icon"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg>
+            <span>স্টাডি</span>
+        </div>
+        <div class="nav-item" id="nav-prayer" onclick="switchTab('prayer', 'Prayer Tracker')">
+            <svg class="icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            <span>নামাজ</span>
+        </div>
+        <div class="nav-item" id="nav-habits" onclick="switchTab('habits', 'Habit Tracker')">
+            <svg class="icon"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <span>অভ্যাস</span>
+        </div>
+        <div class="nav-item" id="nav-fitness" onclick="switchTab('fitness', 'Fitness & Health')">
+            <svg class="icon"><path d="M20.57 14.86L22 13.43l-3.43-3.43-1.43 1.43 3.43 3.43zm-7.43-7.43L14.57 6l-3.43-3.43-1.43 1.43 3.43 3.43zM3 18.57V21h2.43l11.43-11.43-2.43-2.43L3 18.57z"/></svg>
+            <span>ফিটনেস</span>
+        </div>
+        <div class="nav-item" id="nav-routine" onclick="switchTab('routine', 'Daily Routine')">
+            <svg class="icon"><path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2 0v8h8V2h-8zm0 10v10h8v-8h-8z"/></svg>
+            <span>রুটিন</span>
+        </div>
+        <div class="nav-item" id="nav-report" onclick="switchTab('report', 'Analytics Report')">
+            <svg class="icon"><path d="M3 3v18h18V3H3zm6 14H7v-5h2v5zm4 0h-2v-3h2v3zm0-5h-2v-2h2v2zm4 5h-2V7h2v10z"/></svg>
+            <span>রিপোর্ট</span>
+        </div>
+    </div>
+
+    <div class="fullscreen-focus-overlay" id="fsOverlay">
+        <h2 id="fsTitle" style="color:var(--text-main); font-size:32px;">Subject Name</h2>
+        <div class="fs-timer-digits" id="fsTimer">00:00:00</div>
+        <div style="color:var(--text-muted); margin-bottom: 20px;" id="fsTargetText"></div>
+        <button class="add-action-btn" style="max-width: 200px; background: var(--accent-color);" onclick="exitFullscreen()">ফোকাস মোড বন্ধ করুন</button>
+    </div>
+
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-box">
+            <svg style="width:60px; height:60px; fill:var(--success-color); margin-bottom:15px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <h2 style="color:var(--success-color); margin-bottom: 10px;">অভিনন্দন!</h2>
+            <p style="color:var(--text-main); font-size: 16px;" id="successMsg">আপনি আপনার টার্গেট সফলভাবে পূরণ করেছেন।</p>
+            <button class="add-action-btn" style="margin-top:20px; background:var(--border-color); color:var(--text-main);" onclick="document.getElementById('successModal').style.display='none'">বন্ধ করুন</button>
+        </div>
+    </div>
+
+    <script>
+        const generateQuotes = (baseArr, targetLen) => {
+            let res = [...baseArr];
+            while(res.length < targetLen) res.push(...baseArr);
+            return res.slice(0, targetLen);
+        };
+
+        const studyQuotesBase = ["জ্ঞান অর্জন করা প্রত্যেক মুসলিমের উপর ফরজ।", "যে ব্যক্তি জ্ঞান অন্বেষণে পথ চলে, আল্লাহ তার জান্নাতের পথ সহজ করে দেন।", "নিশ্চয়ই কষ্টের সাথেই স্বস্তি রয়েছে।", "আল্লাহ কোনো আত্মাকে তার সাধ্যের অতিরিক্ত কষ্ট দেন না।", "দোলনা থেকে কবর পর্যন্ত জ্ঞান অন্বেষণ করো।"];
+        const studyQuotes = generateQuotes(studyQuotesBase, 100);
+
+        const prayerQuotesBase = ["নামাজ বেহেশতের চাবি।", "তোমরা ধৈর্য ও সালাতের মাধ্যমে সাহায্য প্রার্থনা করো।", "মুমিন এবং কাফিরের মধ্যে পার্থক্য হলো নামাজ ত্যাগ করা।", "নিশ্চয়ই নামাজ অশ্লীল ও মন্দ কাজ থেকে বিরত রাখে।", "যে ব্যক্তি ইচ্ছাকৃতভাবে নামাজ ছেড়ে দিল, সে কুফরি করল।"];
+        const prayerQuotes = generateQuotes(prayerQuotesBase, 100);
+
+        const fitnessQuotesBase = ["দুর্বল মুমিনের চেয়ে শক্তিশালী মুমিন আল্লাহর কাছে অধিক প্রিয়।", "সুস্বাস্থ্য আল্লাহর দেওয়া এক মহান নিয়ামত।", "নিয়মিত ব্যায়াম হৃদযন্ত্রকে সুস্থ রাখে এবং রক্তচলাচল বৃদ্ধি করে।", "শারীরিক পরিশ্রম মানসিক চাপ কমাতে সাহায্য করে।", "সুস্থ শরীরই সুস্থ মস্তিষ্কের প্রধান শর্ত।"];
+        const fitnessQuotes = generateQuotes(fitnessQuotesBase, 100);
+
+        const defaultRoutine = { lunch: 'নির্ধারিত নয়', dinner: 'নির্ধারিত নয়', clean: 'নির্ধারিত নয়', trash: 'নির্ধারিত নয়' };
+        
+        // **BUG FIX: Robust State Initialization**
+        let savedConfig = JSON.parse(localStorage.getItem('mridha_pro_cfg')) || {};
+        window.userConfig = {
+            theme: savedConfig.theme || 'default',
+            subjects: savedConfig.subjects || [{ name: "SSC 26 Super MCQ Practice", targetMin: 120 }],
+            prayerTimes: savedConfig.prayerTimes || { fajr: "04:45", dhuhr: "13:15", asr: "16:45", maghrib: "18:45", isha: "20:15" },
+            habits: savedConfig.habits || [],
+            fitness: savedConfig.fitness || [],
+            routine: savedConfig.routine || { 'শনিবার': {...defaultRoutine}, 'রবিবার': {...defaultRoutine}, 'সোমবার': {...defaultRoutine}, 'মঙ্গলবার': {...defaultRoutine}, 'বুধবার': {...defaultRoutine}, 'বৃহস্পতিবার': {...defaultRoutine}, 'শুক্রবার': {...defaultRoutine} }
+        };
+
+        window.ledgerDB = JSON.parse(localStorage.getItem('mridha_pro_db')) || {};
+
+        let activeTimerId = localStorage.getItem('mridha_pro_timer_id') || null;
+        let lastTimestamp = parseInt(localStorage.getItem('mridha_pro_timer_ts')) || 0;
+        let clockInterval = null;
+        let activeDateKey = getTodayDateKey();
+        let chartsInstance = {};
+
+        function getTodayDateKey() {
+            let d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        }
+        function getDayName() {
+            const days = ["রবিবার", "সোমবার", "মঙ্গলবার", "বুধবার", "বৃহস্পতিবার", "শুক্রবার", "শনিবার"];
+            return days[new Date().getDay()];
+        }
+        function formatDuration(totalSec) {
+            let h = Math.floor(totalSec / 3600);
+            let m = Math.floor((totalSec % 3600) / 60);
+            let s = totalSec % 60;
+            return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+        
+        // **BUG FIX: Safely initialize nested DB structures**
+        function initDailyDB(dateKey) {
+            if(!window.ledgerDB[dateKey]) window.ledgerDB[dateKey] = {};
+            if(!window.ledgerDB[dateKey].study) window.ledgerDB[dateKey].study = {};
+            if(!window.ledgerDB[dateKey].prayer) window.ledgerDB[dateKey].prayer = {};
+            if(!window.ledgerDB[dateKey].habits) window.ledgerDB[dateKey].habits = {};
+            if(!window.ledgerDB[dateKey].fitness) window.ledgerDB[dateKey].fitness = {};
+            if(!window.ledgerDB[dateKey].targetReached) window.ledgerDB[dateKey].targetReached = {};
+        }
+        
+        function saveDB() { localStorage.setItem('mridha_pro_db', JSON.stringify(window.ledgerDB)); }
+        function saveConfig() { localStorage.setItem('mridha_pro_cfg', JSON.stringify(window.userConfig)); }
+
+        const themes = ['default', 'luxury', 'cyberpunk', 'minimalist'];
+        function cycleTheme() {
+            let idx = themes.indexOf(window.userConfig.theme);
+            window.userConfig.theme = themes[(idx + 1) % themes.length];
+            applyTheme(); saveConfig();
+        }
+        function applyTheme() {
+            if(window.userConfig.theme === 'default') document.documentElement.removeAttribute('data-theme');
+            else document.documentElement.setAttribute('data-theme', window.userConfig.theme);
+        }
+
+        window.switchTab = function(tabId, title) {
+            document.querySelectorAll('.app-panel').forEach(el => el.classList.remove('active-panel'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`panel-${tabId}`).classList.add('active-panel');
+            document.getElementById(`nav-${tabId}`).classList.add('active');
+            document.getElementById('dynamic-panel-header').innerText = title.toUpperCase();
+            if(tabId === 'report') renderCharts();
+            renderUI();
+        }
+
+        function rotateQuotes() {
+            document.getElementById('study-motivation-text').innerText = studyQuotes[Math.floor(Math.random() * studyQuotes.length)];
+            document.getElementById('prayer-motivation-text').innerText = prayerQuotes[Math.floor(Math.random() * prayerQuotes.length)];
+            document.getElementById('fitness-benefit-text').innerText = fitnessQuotes[Math.floor(Math.random() * fitnessQuotes.length)];
+        }
+
+        window.addNewSubject = function() {
+            let name = document.getElementById('cfg-sub-name').value.trim();
+            let target = parseInt(document.getElementById('cfg-sub-target').value) || 60;
+            if(!name) return;
+            window.userConfig.subjects.push({ name, targetMin: target });
+            saveConfig(); document.getElementById('cfg-sub-name').value = ""; document.getElementById('cfg-sub-target').value = ""; renderUI();
+        }
+
+        window.toggleStudyTimer = function(subName) {
+            if (activeTimerId === `study_${subName}`) {
+                activeTimerId = null; lastTimestamp = 0;
+                localStorage.removeItem('mridha_pro_timer_id');
+                if(clockInterval) clearInterval(clockInterval);
+            } else {
+                activeTimerId = `study_${subName}`; lastTimestamp = Date.now();
+                localStorage.setItem('mridha_pro_timer_id', activeTimerId);
+                startEngine();
+            }
+            renderUI();
+        }
+
+        function checkTargetCompletion(subName, currentSec, targetSec) {
+            if(currentSec >= targetSec && !window.ledgerDB[activeDateKey].targetReached[subName]) {
+                window.ledgerDB[activeDateKey].targetReached[subName] = true;
+                saveDB();
+                document.getElementById('successMsg').innerText = `আপনি ${subName} এর দৈনিক টার্গেট পূরণ করেছেন!`;
+                document.getElementById('successModal').style.display = 'flex';
+            }
+        }
+
+        // **BUG FIX: Focus mode logic optimized**
+        window.enterFullscreen = function(subName) {
+            document.getElementById('fsTitle').innerText = subName;
+            document.getElementById('fsOverlay').classList.add('active');
+            if(activeTimerId !== `study_${subName}`) toggleStudyTimer(subName);
+        }
+        window.exitFullscreen = function() { 
+            document.getElementById('fsOverlay').classList.remove('active'); 
+            renderUI(); 
+        }
+
+        function startEngine() {
+            if(clockInterval) clearInterval(clockInterval);
+            clockInterval = setInterval(() => {
+                if(activeTimerId) {
+                    let now = Date.now();
+                    let passed = Math.floor((now - lastTimestamp) / 1000);
+                    if(passed > 0) {
+                        initDailyDB(activeDateKey);
+                        if(activeTimerId.startsWith('study_')) {
+                            let sName = activeTimerId.replace('study_', '');
+                            window.ledgerDB[activeDateKey].study[sName] = (window.ledgerDB[activeDateKey].study[sName] || 0) + passed;
+                            
+                            let subData = window.userConfig.subjects.find(s => s.name === sName);
+                            if(subData) checkTargetCompletion(sName, window.ledgerDB[activeDateKey].study[sName], subData.targetMin * 60);
+
+                            let lbl = document.getElementById(`lbl-${btoa(encodeURIComponent(sName)).replace(/=/g, "")}`);
+                            if(lbl) lbl.innerText = formatDuration(window.ledgerDB[activeDateKey].study[sName]);
+                            if(document.getElementById('fsOverlay').classList.contains('active')) {
+                                document.getElementById('fsTimer').innerText = formatDuration(window.ledgerDB[activeDateKey].study[sName]);
+                                let remain = (subData.targetMin * 60) - window.ledgerDB[activeDateKey].study[sName];
+                                document.getElementById('fsTargetText').innerText = remain > 0 ? `বাকি আছে: ${formatDuration(remain)}` : "টার্গেট সম্পূর্ণ!";
+                            }
+                        }
+                    }
+                    lastTimestamp = now; localStorage.setItem('mridha_pro_timer_ts', lastTimestamp); saveDB(); calcGlobalStats();
+                }
+            }, 1000);
+        }
+
+        window.updatePrayer = function(wakt, status) {
+            initDailyDB(activeDateKey);
+            window.ledgerDB[activeDateKey].prayer[wakt] = status;
+            saveDB(); renderUI();
+            
+            let p = window.ledgerDB[activeDateKey].prayer;
+            if(p.fajr && p.dhuhr && p.asr && p.maghrib && p.isha && !Object.values(p).includes('missed') && !window.ledgerDB[activeDateKey].targetReached['all_prayers']) {
+                window.ledgerDB[activeDateKey].targetReached['all_prayers'] = true; saveDB();
+                document.getElementById('successMsg').innerText = `মাশাআল্লাহ! আপনি আজকের ৫ ওয়াক্ত নামাজ আদায় করেছেন।`;
+                document.getElementById('successModal').style.display = 'flex';
+            }
+        }
+        window.savePrayerConfig = function() {
+            window.userConfig.prayerTimes = {
+                fajr: document.getElementById('pr-fajr').value, dhuhr: document.getElementById('pr-dhuhr').value, asr: document.getElementById('pr-asr').value, maghrib: document.getElementById('pr-maghrib').value, isha: document.getElementById('pr-isha').value
+            };
+            saveConfig();
+        }
+
+        window.addHabit = function() {
+            let name = document.getElementById('habit-name').value.trim();
+            let sched = document.getElementById('habit-schedule').value;
+            if(!name) return;
+            window.userConfig.habits.push({ id: 'h_'+Date.now(), name, schedule: sched });
+            saveConfig(); document.getElementById('habit-name').value = ''; renderUI();
+        }
+        window.toggleHabit = function(id) {
+            initDailyDB(activeDateKey);
+            window.ledgerDB[activeDateKey].habits[id] = !window.ledgerDB[activeDateKey].habits[id];
+            saveDB(); renderUI();
+        }
+
+        // **BUG FIX: Fitness module safely pushing data**
+        window.addFitness = function() {
+            let name = document.getElementById('fit-name').value.trim();
+            let type = document.getElementById('fit-type').value;
+            let target = parseInt(document.getElementById('fit-target').value) || 0;
+            if(!name) { alert('ব্যায়ামের নাম দিন!'); return; }
+            window.userConfig.fitness.push({ id: 'f_'+Date.now(), name, type, target });
+            saveConfig(); 
+            document.getElementById('fit-name').value = ''; 
+            document.getElementById('fit-target').value = ''; 
+            renderUI();
+        }
+        window.updateFitness = function(id, val) {
+            initDailyDB(activeDateKey);
+            window.ledgerDB[activeDateKey].fitness[id] = val;
+            saveDB();
+        }
+
+        // **BUG FIX: Routine Save with proper form clearing & alert**
+        window.saveRoutine = function() {
+            let day = document.getElementById('rt-day').value;
+            window.userConfig.routine[day] = {
+                lunch: document.getElementById('rt-cook-day').value || 'নির্ধারিত নয়',
+                dinner: document.getElementById('rt-cook-night').value || 'নির্ধারিত নয়',
+                clean: document.getElementById('rt-clean').value || 'নির্ধারিত নয়',
+                trash: document.getElementById('rt-trash').value || 'নির্ধারিত নয়'
+            };
+            saveConfig(); 
+            document.getElementById('rt-cook-day').value = '';
+            document.getElementById('rt-cook-night').value = '';
+            document.getElementById('rt-clean').value = '';
+            document.getElementById('rt-trash').value = '';
+            renderUI();
+            alert(day + ' এর রুটিন সফলভাবে সেভ হয়েছে!');
+        }
+
+        function renderUI() {
+            initDailyDB(activeDateKey);
+            calcGlobalStats();
+            renderDateSlider();
+            
+            let studyHtml = '';
+            window.userConfig.subjects.forEach(s => {
+                let sec = window.ledgerDB[activeDateKey].study[s.name] || 0;
+                let perc = Math.min(100, Math.round((sec / (s.targetMin * 60)) * 100)) || 0;
+                let isRun = activeTimerId === `study_${s.name}`;
+                let safeId = btoa(encodeURIComponent(s.name)).replace(/=/g, "");
+                studyHtml += `
+                <div class="subject-card">
+                    <div class="card-top-row">
+                        <div class="card-left-info">
+                            <div class="progress-ring-box">
+                                <svg width="80" height="80"><circle cx="40" cy="40" r="35" stroke="var(--border-color)" stroke-width="6" fill="transparent"/><circle cx="40" cy="40" r="35" stroke="var(--primary-glow)" stroke-width="6" fill="transparent" stroke-dasharray="220" stroke-dashoffset="${220 - (220 * perc / 100)}"/></svg>
+                                <span class="progress-text">${perc}%</span>
+                            </div>
+                            <div class="sub-details">
+                                <h3>${s.name}</h3>
+                                <p>টার্গেট: ${s.targetMin} মি. | <span id="lbl-${safeId}">${formatDuration(sec)}</span></p>
+                                <button class="status-btn" style="margin-top:8px; padding:4px 10px; font-size:12px;" onclick="enterFullscreen('${s.name}')">ফোকাস মোড</button>
+                            </div>
+                        </div>
+                        <button class="play-btn ${isRun ? 'running' : ''}" onclick="toggleStudyTimer('${s.name}')">
+                            ${isRun ? '<svg class="icon"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>' : '<svg class="icon"><path d="M8 5v14l11-7z"/></svg>'}
+                        </button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('subject-cards-root').innerHTML = studyHtml;
+
+            let prayHtml = '';
+            const pMap = { fajr: "ফজর", dhuhr: "যোহর", asr: "আসর", maghrib: "মাগরিব", isha: "ইশা" };
+            Object.keys(pMap).forEach(k => {
+                let status = window.ledgerDB[activeDateKey].prayer[k];
+                prayHtml += `
+                <div class="checkbox-row">
+                    <div><strong>${pMap[k]}</strong> <span style="font-size:12px; color:var(--text-muted)">(${window.userConfig.prayerTimes[k]})</span></div>
+                    <div style="display:flex; gap:8px;">
+                        <button class="status-btn ${status==='mosque'?'active-success':''}" onclick="updatePrayer('${k}', 'mosque')">জামায়াত</button>
+                        <button class="status-btn ${status==='home'?'active-warning':''}" onclick="updatePrayer('${k}', 'home')">ঘরে</button>
+                        <button class="status-btn ${status==='missed'?'active-warning':''}" style="${status==='missed'?'background:var(--accent-color);border-color:var(--accent-color);color:#fff;':''}" onclick="updatePrayer('${k}', 'missed')">কাজা</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('prayer-tracker-root').innerHTML = prayHtml;
+
+            let habHtml = '';
+            window.userConfig.habits.forEach(h => {
+                let isDone = window.ledgerDB[activeDateKey].habits[h.id];
+                habHtml += `
+                <div class="checkbox-row">
+                    <div><strong>${h.name}</strong> <span style="font-size:12px; color:var(--text-muted)">(${h.schedule==='day'?'দিন':h.schedule==='night'?'রাত':'যেকোনো সময়'})</span></div>
+                    <button class="status-btn ${isDone?'active-success':''}" onclick="toggleHabit('${h.id}')">${isDone?'সম্পন্ন':'বাকি'}</button>
+                </div>`;
+            });
+            document.getElementById('habits-list-root').innerHTML = habHtml || '<p style="color:var(--text-muted); text-align:center;">কোনো অভ্যাস যোগ করা হয়নি</p>';
+
+            let fitHtml = '';
+            window.userConfig.fitness.forEach(f => {
+                let val = window.ledgerDB[activeDateKey].fitness[f.id] || '';
+                fitHtml += `
+                <div class="checkbox-row" style="flex-direction:column; align-items:flex-start; gap:10px;">
+                    <div><strong>${f.name}</strong> <span style="font-size:12px; color:var(--text-muted)">[টার্গেট: ${f.target} ${f.type==='reps'?'রেপস':'মিনিট'}]</span></div>
+                    <input type="number" class="form-input" style="margin-bottom:0;" placeholder="আজ কতটুকু করলেন?" value="${val}" onchange="updateFitness('${f.id}', this.value)">
+                </div>`;
+            });
+            document.getElementById('fitness-list-root').innerHTML = fitHtml || '<p style="color:var(--text-muted); text-align:center;">কোনো ব্যায়াম যোগ করা হয়নি</p>';
+
+            let todayName = getDayName();
+            let rt = window.userConfig.routine[todayName];
+            document.getElementById('today-routine-live').innerHTML = `
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px; padding:10px; background:rgba(0,0,0,0.1); border-radius:8px;"><span>দুপুরের রান্না:</span> <strong>${rt.lunch}</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px; padding:10px; background:rgba(0,0,0,0.1); border-radius:8px;"><span>রাতের রান্না:</span> <strong>${rt.dinner}</strong></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px; padding:10px; background:rgba(0,0,0,0.1); border-radius:8px;"><span>রুম পরিষ্কার:</span> <strong>${rt.clean}</strong></div>
+                <div style="display:flex; justify-content:space-between; padding:10px; background:rgba(0,0,0,0.1); border-radius:8px;"><span>ময়লা ফেলা:</span> <strong>${rt.trash}</strong></div>
+            `;
+            
+            document.getElementById('pr-fajr').value = window.userConfig.prayerTimes.fajr;
+            document.getElementById('pr-dhuhr').value = window.userConfig.prayerTimes.dhuhr;
+            document.getElementById('pr-asr').value = window.userConfig.prayerTimes.asr;
+            document.getElementById('pr-maghrib').value = window.userConfig.prayerTimes.maghrib;
+            document.getElementById('pr-isha').value = window.userConfig.prayerTimes.isha;
+        }
+
+        function calcGlobalStats() {
+            let totalSec = 0, itemsDone = 0, totalItems = window.userConfig.subjects.length;
+            window.userConfig.subjects.forEach(s => {
+                let sec = window.ledgerDB[activeDateKey].study[s.name] || 0;
+                totalSec += sec;
+                if(sec >= s.targetMin * 60) itemsDone++;
+            });
+            
+            let perc = totalItems > 0 ? Math.round((itemsDone/totalItems)*100) : 0;
+            document.getElementById('global-progress-lbl').innerText = perc + "%";
+            let h = Math.floor(totalSec/3600), m = Math.floor((totalSec%3600)/60);
+            document.getElementById('global-time-lbl').innerText = `${h}h ${m}m`;
+        }
+
+        function renderDateSlider() {
+            let root = document.getElementById('calendar-slider-root');
+            root.innerHTML = "";
+            let base = new Date();
+            for(let i = -4; i <= 2; i++) {
+                let d = new Date(base); d.setDate(base.getDate() + i);
+                let fullKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                let mText = d.toLocaleString('bn-BD', { month: 'short' });
+                let isAct = fullKey === activeDateKey;
+                root.innerHTML += `
+                    <div class="date-bubble ${isAct ? 'active' : ''}" onclick="activeDateKey='${fullKey}'; renderUI();">
+                        <span class="day-num">${d.getDate()}</span>
+                        <span class="month-txt">${mText}</span>
+                    </div>`;
+            }
+        }
+
+        function renderCharts() {
+            const chartColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-glow').trim();
+            const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim();
+            
+            let labels = [], studyData = [], prayerData = [], habitData = [];
+            let base = new Date();
+            for(let i=6; i>=0; i--) {
+                let d = new Date(base); d.setDate(base.getDate() - i);
+                let k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+                labels.push(`${d.getDate()}/${d.getMonth()+1}`);
+                
+                let db = window.ledgerDB[k] || { study:{}, prayer:{}, habits:{} };
+                
+                let dStudy = 0; Object.values(db.study).forEach(v => dStudy+=v);
+                studyData.push(dStudy/3600); 
+                
+                let pCount = Object.values(db.prayer).filter(v => v==='mosque' || v==='home').length;
+                prayerData.push((pCount/5)*100);
+                
+                let hTotal = window.userConfig.habits.length;
+                let hDone = Object.values(db.habits).filter(v=>v).length;
+                habitData.push(hTotal > 0 ? (hDone/hTotal)*100 : 0);
+            }
+
+            const commonOpt = { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { color: textColor } }, x: { ticks: { color: textColor } } }, plugins: { legend: { display: false } } };
+
+            if(chartsInstance.study) chartsInstance.study.destroy();
+            chartsInstance.study = new Chart(document.getElementById('studyChart'), { type: 'bar', data: { labels, datasets: [{ data: studyData, backgroundColor: chartColor, borderRadius: 6 }] }, options: commonOpt });
+
+            if(chartsInstance.prayer) chartsInstance.prayer.destroy();
+            chartsInstance.prayer = new Chart(document.getElementById('prayerChart'), { type: 'line', data: { labels, datasets: [{ data: prayerData, borderColor: '#10b981', tension: 0.4, fill: true, backgroundColor: 'rgba(16, 185, 129, 0.1)' }] }, options: commonOpt });
+
+            if(chartsInstance.habit) chartsInstance.habit.destroy();
+            chartsInstance.habit = new Chart(document.getElementById('habitChart'), { type: 'line', data: { labels, datasets: [{ data: habitData, borderColor: '#f59e0b', tension: 0.4, fill: true, backgroundColor: 'rgba(245, 158, 11, 0.1)' }] }, options: commonOpt });
+        }
+
+        applyTheme();
+        rotateQuotes();
+        renderUI();
+        if(activeTimerId) startEngine();
+
+    </script>
+</body>
+</html>
