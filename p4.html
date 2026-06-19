@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mridha Workspace Pro - Premium Lifestyle Ecosystem</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(19, 26, 38, 0.8);
+            --primary-glow: #3b82f6;
+            --primary-rgb: 59, 130, 246;
+            --accent-color: #ef4444;
+            --success-color: #10b981;
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --nav-bg: rgba(15, 23, 42, 0.8);
+            --glass-blur: blur(15px);
+        }
+
+        [data-theme="luxury"] {
+            --bg-color: #0f0d0a;
+            --card-bg: rgba(28, 24, 18, 0.85);
+            --primary-glow: #d4af37;
+            --primary-rgb: 212, 175, 55;
+            --accent-color: #ff6b6b;
+            --text-main: #f5f6fa;
+            --border-color: rgba(212, 175, 55, 0.2);
+        }
+
+        [data-theme="cyberpunk"] {
+            --bg-color: #050510;
+            --card-bg: rgba(11, 11, 26, 0.9);
+            --primary-glow: #00ffcc;
+            --primary-rgb: 0, 255, 204;
+            --accent-color: #ff00ff;
+            --text-main: #e0e0ff;
+            --border-color: rgba(0, 255, 204, 0.3);
+        }
+
+        [data-theme="minimalist"] {
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --primary-glow: #111827;
+            --primary-rgb: 17, 24, 39;
+            --accent-color: #dc2626;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 100px; transition: background 0.3s ease; overflow-x: hidden; }
+
+        .header { padding: 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); background: var(--nav-bg); backdrop-filter: var(--glass-blur); position: sticky; top: 0; z-index: 100; }
+        .app-logo { font-weight: 800; font-size: 20px; letter-spacing: 1px; color: var(--primary-glow); text-transform: uppercase; }
+        .theme-btn { padding: 8px 15px; border-radius: 20px; border: 1px solid var(--primary-glow); background: transparent; color: var(--text-main); font-size: 12px; cursor: pointer; transition: 0.3s; }
+
+        .container { padding: 20px; max-width: 600px; margin: 0 auto; }
+
+        /* Panels */
+        .app-panel { display: none; animation: slideUp 0.4s ease-out; }
+        .app-panel.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Generic Cards */
+        .card { background: var(--card-bg); backdrop-filter: var(--glass-blur); border: 1px solid var(--border-color); border-radius: 24px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .card-title { font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+
+        /* Study Timer Styles */
+        .timer-display { text-align: center; padding: 20px 0; }
+        .timer-digits { font-size: 48px; font-weight: 800; font-family: 'Courier New', monospace; color: var(--primary-glow); }
+        .timer-controls { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
+        .btn { padding: 12px 24px; border-radius: 14px; border: none; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .btn-primary { background: var(--primary-glow); color: var(--bg-color); }
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
+        
+        /* Form Elements */
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
+        input, select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: var(--text-main); outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--primary-glow); }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 15px; left: 15px; right: 15px; background: var(--nav-bg); backdrop-filter: var(--glass-blur); border: 1px solid var(--border-color); border-radius: 25px; display: grid; grid-template-columns: repeat(6, 1fr); padding: 12px 5px; z-index: 1000; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
+        .nav-item.active { color: var(--primary-glow); }
+        .nav-item svg { width: 20px; height: 20px; fill: currentColor; }
+        .nav-item span { font-size: 10px; font-weight: 600; }
+
+        /* Prayer Specific */
+        .prayer-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
+        .prayer-btns { display: flex; gap: 5px; }
+        .p-btn { padding: 6px 10px; border-radius: 8px; font-size: 11px; border: 1px solid var(--border-color); background: transparent; color: var(--text-muted); cursor: pointer; }
+        .p-btn.active { background: var(--primary-glow); color: var(--bg-color); border-color: var(--primary-glow); }
+
+        /* Motivation Quote */
+        .quote-box { font-style: italic; font-size: 14px; line-height: 1.6; color: var(--text-main); border-left: 3px solid var(--primary-glow); padding-left: 15px; margin: 15px 0; }
+
+        /* Routine Widget */
+        .live-widget { background: linear-gradient(135deg, var(--primary-glow), #6366f1); color: white; padding: 20px; border-radius: 24px; margin-bottom: 20px; }
+        
+        /* Modal */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+        .modal-content { background: var(--card-bg); border: 1px solid var(--primary-glow); padding: 30px; border-radius: 28px; text-align: center; max-width: 400px; }
+
+        /* Analytics Chart */
+        .chart-container { height: 250px; width: 100%; margin-top: 15px; }
+
+        /* Focus Mode */
+        .focus-mode { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .focus-mode.active { display: flex; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="app-logo">Mridha Pro</div>
+        <button class="theme-btn" onclick="toggleTheme()">থিম পরিবর্তন</button>
+    </div>
+
+    <div class="container">
+        <!-- Live Routine Widget -->
+        <div id="live-routine-container"></div>
+
+        <!-- Panel: Study -->
+        <div id="panel-study" class="app-panel active">
+            <div class="card">
+                <div class="card-title">
+                    <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5.18 9L12 12.72 18.82 9 12 5.28 5.18 9zM7 13.09V15c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2v-1.91l-5 2.73-5-2.73z"/></svg>
+                    পড়াশোনা ফোকাস
+                </div>
+                <div id="quote-study" class="quote-box"></div>
+                <div class="timer-display">
+                    <div id="study-timer" class="timer-digits">00:00:00</div>
+                    <div id="study-target-info" style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">টার্গেট: ০ মিনিট</div>
+                    <div class="timer-controls">
+                        <button class="btn btn-primary" id="timer-toggle-btn" onclick="toggleStudyTimer()">শুরু করুন</button>
+                        <button class="btn btn-outline" onclick="openFocusMode()">ফোকাস মোড</button>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>বিষয় নির্বাচন</label>
+                    <select id="study-subject-select" onchange="updateStudyTargetDisplay()">
+                        <option value="">বিষয় বেছে নিন</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">নতুন বিষয় যোগ করুন</div>
+                <div class="input-group">
+                    <input type="text" id="new-sub-name" placeholder="বিষয়ের নাম (যেমন: গণিত MCQ)">
+                </div>
+                <div class="input-group">
+                    <input type="number" id="new-sub-target" placeholder="টার্গেট সময় (মিনিট)">
+                </div>
+                <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="addSubject()">যোগ করুন</button>
+            </div>
+        </div>
+
+        <!-- Panel: Prayer -->
+        <div id="panel-prayer" class="app-panel">
+            <div class="card">
+                <div class="card-title">নামাজ ট্র্যাকার</div>
+                <div id="quote-prayer" class="quote-box"></div>
+                <div id="prayer-list"></div>
+            </div>
+            <div class="card">
+                <div class="card-title">ওয়াক্তের সময় সেট করুন</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;" id="prayer-time-config"></div>
+            </div>
+        </div>
+
+        <!-- Panel: Habits -->
+        <div id="panel-habits" class="app-panel">
+            <div class="card">
+                <div class="card-title">দৈনিক অভ্যাস</div>
+                <div id="habit-list"></div>
+            </div>
+            <div class="card">
+                <div class="card-title">নতুন অভ্যাস যোগ করুন</div>
+                <input type="text" id="new-habit-name" placeholder="অভ্যাসের নাম" style="margin-bottom: 10px;">
+                <select id="new-habit-time" style="margin-bottom: 15px;">
+                    <option value="সকাল">সকাল</option>
+                    <option value="রাত">রাত</option>
+                    <option value="যেকোনো সময়">যেকোনো সময়</option>
+                </select>
+                <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="addHabit()">যোগ করুন</button>
+            </div>
+        </div>
+
+        <!-- Panel: Fitness -->
+        <div id="panel-fitness" class="app-panel">
+            <div class="card">
+                <div class="card-title">ব্যায়াম ও স্বাস্থ্য</div>
+                <div id="quote-fitness" class="quote-box"></div>
+                <div id="fitness-list"></div>
+            </div>
+            <div class="card">
+                <div class="card-title">নতুন অ্যাক্টিভিটি</div>
+                <input type="text" id="fit-name" placeholder="ব্যায়ামের নাম" style="margin-bottom: 10px;">
+                <input type="number" id="fit-goal" placeholder="টার্গেট (মিনিট বা রেপস)" style="margin-bottom: 15px;">
+                <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="addFitness()">যোগ করুন</button>
+            </div>
+        </div>
+
+        <!-- Panel: Routine -->
+        <div id="panel-routine" class="app-panel">
+            <div class="card">
+                <div class="card-title">সাপ্তাহিক রুটিন কাস্টমাইজ</div>
+                <select id="routine-day-select" onchange="loadRoutineDay()" style="margin-bottom: 15px;">
+                    <option value="0">শনিবার</option>
+                    <option value="1">রবিবার</option>
+                    <option value="2">সোমবার</option>
+                    <option value="3">মঙ্গলবার</option>
+                    <option value="4">বুধবার</option>
+                    <option value="5">বৃহস্পতিবার</option>
+                    <option value="6">শুক্রবার</option>
+                </select>
+                <div class="input-group">
+                    <label>দুপুরের রান্না (কার নাম)</label>
+                    <input type="text" id="rt-lunch">
+                </div>
+                <div class="input-group">
+                    <label>রাতের রান্না (কার নাম)</label>
+                    <input type="text" id="rt-dinner">
+                </div>
+                <div class="input-group">
+                    <label>রুম ক্লিনিং</label>
+                    <input type="text" id="rt-clean">
+                </div>
+                <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="saveRoutine()">সেভ করুন</button>
+            </div>
+        </div>
+
+        <!-- Panel: Report -->
+        <div id="panel-report" class="app-panel">
+            <div class="card">
+                <div class="card-title">সাপ্তাহিক পড়াশোনা (ঘণ্টা)</div>
+                <div class="chart-container"><canvas id="studyChart"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="card-title">নামাজ আদায়ের হার (%)</div>
+                <div class="chart-container"><canvas id="prayerChart"></canvas></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nav Bar -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('study')">
+            <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+            <span>স্টাডি</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('prayer')">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>নামাজ</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('habits')">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            <span>হ্যাবিট</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('fitness')">
+            <svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43l-3.43-3.43-1.43 1.43 3.43 3.43zm-7.43-7.43L14.57 6l-3.43-3.43-1.43 1.43 3.43 3.43zM3 18.57V21h2.43l11.43-11.43-2.43-2.43L3 18.57z"/></svg>
+            <span>ফিটনেস</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('routine')">
+            <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+            <span>রুটিন</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('report')">
+            <svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
+            <span>রিপোর্ট</span>
+        </div>
+    </div>
+
+    <!-- Modals & Overlays -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: var(--success-color); margin-bottom: 10px;">অভিনন্দন!</h2>
+            <p id="success-msg"></p>
+            <button class="btn btn-primary" style="margin-top: 20px; width: 100%; justify-content: center;" onclick="closeModal()">ঠিক আছে</button>
+        </div>
+    </div>
+
+    <div id="focus-overlay" class="focus-mode">
+        <div id="focus-digits" class="timer-digits" style="font-size: 120px;">00:00:00</div>
+        <div id="focus-sub" style="font-size: 24px; color: var(--text-muted); margin-top: 20px;">পড়াশোনা চলছে...</div>
+        <button class="btn btn-outline" style="margin-top: 50px;" onclick="closeFocusMode()">ফোকাস মোড বন্ধ করুন</button>
+    </div>
+
+    <script>
+        // --- 1. Data Structures & Quotes ---
+        const studyQuotes = ["জ্ঞান অন্বেষণ করা প্রত্যেক মুসলিমের জন্য ফরজ।", "যে ব্যক্তি জ্ঞানার্জনের পথে চলে, আল্লাহ তার জান্নাতের পথ সহজ করে দেন।", "তোমার সময়ের হিসাব না দিলে হাশরের ময়দানে পা নাড়াতে পারবে না।", "আজকের পরিশ্রম আগামীকালের স্বস্তি।", "সময় হলো তরবারির মতো, তুমি তাকে না কাটলে সে তোমাকে কাটবে।"];
+        const prayerQuotes = ["নামাজ হলো জান্নাতের চাবি।", "নিশ্চয়ই নামাজ মানুষকে অশ্লীল ও মন্দ কাজ থেকে বিরত রাখে।", "মুমিন এবং কাফিরের মধ্যে পার্থক্য হলো নামাজ ত্যাগ করা।", "কিয়ামতের দিন সর্বপ্রথম নামাজের হিসাব নেওয়া হবে।", "ধৈর্য ও নামাজের মাধ্যমে আল্লাহর সাহায্য প্রার্থনা করো।"];
+        const fitnessFacts = ["প্রতিদিন ৩০ মিনিট হাঁটলে হৃদরোগের ঝুঁকি ৪০% কমে যায়।", "ব্যায়াম করলে মস্তিস্কে এন্ডোরফিন নিঃসৃত হয় যা আপনাকে সুখী রাখে।", "পর্যাপ্ত পানি পান পেশীর ক্লান্তি দূর করে।", "সুস্থ শরীর ইবাদতে একাগ্রতা বাড়ায়।"];
+
+        // State Management
+        let state = JSON.parse(localStorage.getItem('mridha_pro_state')) || {
+            theme: 'default',
+            subjects: [{name: 'General Study', target: 60}],
+            habits: [],
+            fitness: [],
+            routine: Array(7).fill({lunch: '', dinner: '', clean: ''}),
+            prayerTimes: {Fajr: '05:00', Dhuhr: '13:15', Asr: '16:30', Maghrib: '18:15', Isha: '19:45'},
+            history: {} // Format: { 'YYYY-MM-DD': { study: {sub: sec}, prayer: {wakt: status}, habits: {id: bool} } }
+        };
+
+        let activeTimer = { sub: null, startTime: null, elapsed: 0, interval: null };
+        let currentTab = 'study';
+
+        // --- 2. Core Functions ---
+        function save() {
+            localStorage.setItem('mridha_pro_state', JSON.stringify(state));
+        }
+
+        function getToday() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        function initDay() {
+            const today = getToday();
+            if (!state.history[today]) {
+                state.history[today] = { study: {}, prayer: {}, habits: {}, fitness: {} };
+                save();
+            }
+        }
+
+        function toggleTheme() {
+            const themes = ['default', 'luxury', 'cyberpunk', 'minimalist'];
+            let idx = themes.indexOf(state.theme);
+            state.theme = themes[(idx + 1) % themes.length];
+            document.body.setAttribute('data-theme', state.theme);
+            save();
+        }
+
+        function switchTab(tabId) {
+            currentTab = tabId;
+            document.querySelectorAll('.app-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(`panel-${tabId}`).classList.add('active');
+            event.currentTarget.classList.add('active');
+            
+            if(tabId === 'report') renderCharts();
+            renderUI();
+        }
+
+        // --- 3. Study Module ---
+        function addSubject() {
+            const name = document.getElementById('new-sub-name').value;
+            const target = parseInt(document.getElementById('new-sub-target').value);
+            if (name && target) {
+                state.subjects.push({name, target});
+                save();
+                renderUI();
+                document.getElementById('new-sub-name').value = '';
+                document.getElementById('new-sub-target').value = '';
+            }
+        }
+
+        function toggleStudyTimer() {
+            const sub = document.getElementById('study-subject-select').value;
+            if (!sub) return alert("দয়া করে একটি বিষয় নির্বাচন করুন!");
+
+            if (activeTimer.interval) {
+                clearInterval(activeTimer.interval);
+                activeTimer.interval = null;
+                document.getElementById('timer-toggle-btn').innerText = "শুরু করুন";
+                document.getElementById('timer-toggle-btn').classList.remove('btn-outline');
+            } else {
+                activeTimer.sub = sub;
+                activeTimer.startTime = Date.now();
+                const today = getToday();
+                activeTimer.elapsed = state.history[today].study[sub] || 0;
+                
+                activeTimer.interval = setInterval(() => {
+                    const delta = Math.floor((Date.now() - activeTimer.startTime) / 1000);
+                    const totalSec = activeTimer.elapsed + delta;
+                    state.history[today].study[sub] = totalSec;
+                    updateTimerUI(totalSec);
+                    
+                    // Check completion
+                    const targetSec = state.subjects.find(s => s.name === sub).target * 60;
+                    if (totalSec === targetSec) showSuccess(`আপনি ${sub} এর আজকের টার্গেট পূর্ণ করেছেন!`);
+                    
+                    if (delta % 10 === 0) save(); // Auto save every 10 sec
+                }, 1000);
+                
+                document.getElementById('timer-toggle-btn').innerText = "বিরতি";
+                document.getElementById('timer-toggle-btn').classList.add('btn-outline');
+            }
+        }
+
+        function updateTimerUI(sec) {
+            const h = Math.floor(sec / 3600).toString().padStart(2, '0');
+            const m = Math.floor((sec % 3600) / 60).toString().padStart(2, '0');
+            const s = (sec % 60).toString().padStart(2, '0');
+            const str = `${h}:${m}:${s}`;
+            document.getElementById('study-timer').innerText = str;
+            document.getElementById('focus-digits').innerText = str;
+        }
+
+        // --- 4. UI Rendering ---
+        function renderUI() {
+            const today = getToday();
+            initDay();
+
+            // Study Subject Dropdown
+            const subSelect = document.getElementById('study-subject-select');
+            const currentSub = subSelect.value;
+            subSelect.innerHTML = '<option value="">বিষয় বেছে নিন</option>';
+            state.subjects.forEach(s => {
+                subSelect.innerHTML += `<option value="${s.name}" ${currentSub === s.name ? 'selected' : ''}>${s.name}</option>`;
+            });
+
+            // Random Quotes
+            document.getElementById('quote-study').innerText = studyQuotes[Math.floor(Math.random() * studyQuotes.length)];
+            document.getElementById('quote-prayer').innerText = prayerQuotes[Math.floor(Math.random() * prayerQuotes.length)];
+            document.getElementById('quote-fitness').innerText = fitnessFacts[Math.floor(Math.random() * fitnessFacts.length)];
+
+            // Prayer List
+            const prayerList = document.getElementById('prayer-list');
+            prayerList.innerHTML = '';
+            const wakts = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+            wakts.forEach(w => {
+                const status = state.history[today].prayer[w] || '';
+                prayerList.innerHTML += `
+                    <div class="prayer-row">
+                        <div><strong>${w}</strong> <span style="font-size:11px; color:var(--text-muted)">(${state.prayerTimes[w]})</span></div>
+                        <div class="prayer-btns">
+                            <button class="p-btn ${status === 'জামাত' ? 'active' : ''}" onclick="setPrayer('${w}', 'জামাত')">জামাত</button>
+                            <button class="p-btn ${status === 'ঘরে' ? 'active' : ''}" onclick="setPrayer('${w}', 'ঘরে')">ঘরে</button>
+                            <button class="p-btn ${status === 'কাজা' ? 'active' : ''}" onclick="setPrayer('${w}', 'কাজা')">কাজা</button>
+                        </div>
+                    </div>`;
+            });
+
+            // Prayer Config
+            const prayerConfig = document.getElementById('prayer-time-config');
+            prayerConfig.innerHTML = '';
+            wakts.forEach(w => {
+                prayerConfig.innerHTML += `
+                    <div>
+                        <label>${w}</label>
+                        <input type="time" value="${state.prayerTimes[w]}" onchange="updatePrayerTime('${w}', this.value)">
+                    </div>`;
+            });
+
+            // Habit List
+            const habitList = document.getElementById('habit-list');
+            habitList.innerHTML = '';
+            state.habits.forEach(h => {
+                const checked = state.history[today].habits[h.id] ? 'checked' : '';
+                habitList.innerHTML += `
+                    <div class="prayer-row">
+                        <div>${h.name} <br> <small style="color:var(--text-muted)">${h.time}</small></div>
+                        <input type="checkbox" style="width:25px; height:25px;" ${checked} onclick="toggleHabit('${h.id}')">
+                    </div>`;
+            });
+
+            // Fitness List
+            const fitnessList = document.getElementById('fitness-list');
+            fitnessList.innerHTML = '';
+            state.fitness.forEach(f => {
+                const val = state.history[today].fitness[f.id] || 0;
+                fitnessList.innerHTML += `
+                    <div class="prayer-row">
+                        <div>${f.name} <br> <small style="color:var(--text-muted)">টার্গেট: ${f.goal}</small></div>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <input type="number" value="${val}" style="width:70px; padding:5px;" onchange="updateFitness('${f.id}', this.value)">
+                        </div>
+                    </div>`;
+            });
+
+            // Live Routine Widget
+            renderLiveRoutine();
+        }
+
+        // --- 5. Supporting Logics ---
+        function updateStudyTargetDisplay() {
+            const sub = document.getElementById('study-subject-select').value;
+            if (!sub) return;
+            const target = state.subjects.find(s => s.name === sub).target;
+            document.getElementById('study-target-info').innerText = `টার্গেট: ${target} মিনিট`;
+            const totalSec = state.history[getToday()].study[sub] || 0;
+            updateTimerUI(totalSec);
+        }
+
+        function setPrayer(wakt, status) {
+            state.history[getToday()].prayer[wakt] = status;
+            save();
+            renderUI();
+            
+            // Completion Check
+            const done = Object.values(state.history[getToday()].prayer).filter(v => v === 'জামাত' || v === 'ঘরে').length;
+            if (done === 5) showSuccess("মাশাআল্লাহ! আপনি আজ পাঁচ ওয়াক্ত নামাজ পূর্ণ করেছেন।");
+        }
+
+        function updatePrayerTime(w, time) {
+            state.prayerTimes[w] = time;
+            save();
+        }
+
+        function addHabit() {
+            const name = document.getElementById('new-habit-name').value;
+            const time = document.getElementById('new-habit-time').value;
+            if (name) {
+                state.habits.push({id: Date.now(), name, time});
+                save(); renderUI();
+                document.getElementById('new-habit-name').value = '';
+            }
+        }
+
+        function toggleHabit(id) {
+            state.history[getToday()].habits[id] = !state.history[getToday()].habits[id];
+            save();
+        }
+
+        function addFitness() {
+            const name = document.getElementById('fit-name').value;
+            const goal = document.getElementById('fit-goal').value;
+            if (name) {
+                state.fitness.push({id: Date.now(), name, goal});
+                save(); renderUI();
+                document.getElementById('fit-name').value = '';
+                document.getElementById('fit-goal').value = '';
+            }
+        }
+
+        function updateFitness(id, val) {
+            state.history[getToday()].fitness[id] = parseInt(val);
+            save();
+        }
+
+        // Routine
+        function loadRoutineDay() {
+            const dayIdx = document.getElementById('routine-day-select').value;
+            const data = state.routine[dayIdx];
+            document.getElementById('rt-lunch').value = data.lunch;
+            document.getElementById('rt-dinner').value = data.dinner;
+            document.getElementById('rt-clean').value = data.clean;
+        }
+
+        function saveRoutine() {
+            const dayIdx = document.getElementById('routine-day-select').value;
+            state.routine[dayIdx] = {
+                lunch: document.getElementById('rt-lunch').value,
+                dinner: document.getElementById('rt-dinner').value,
+                clean: document.getElementById('rt-clean').value
+            };
+            save();
+            alert("রুটিন সেভ হয়েছে!");
+            renderLiveRoutine();
+        }
+
+        function renderLiveRoutine() {
+            const dayIdx = (new Date().getDay() + 1) % 7; // Convert to Sat-Fri (0-6)
+            const todayData = state.routine[dayIdx];
+            const hour = new Date().getHours();
+            let currentTask = hour < 16 ? `দুপুরের রান্না: ${todayData.lunch || 'নির্ধারিত নয়'}` : `রাতের রান্না: ${todayData.dinner || 'নির্ধারিত নয়'}`;
+            
+            document.getElementById('live-routine-container').innerHTML = `
+                <div class="live-widget">
+                    <div style="font-size: 12px; opacity: 0.8; text-transform: uppercase;">আজকের রাঁধুনি ও দায়িত্ব</div>
+                    <div style="font-size: 18px; font-weight: 700; margin: 5px 0;">${currentTask}</div>
+                    <div style="font-size: 14px; opacity: 0.9;">ক্লিনিং: ${todayData.clean || 'নির্ধারিত নয়'}</div>
+                </div>`;
+        }
+
+        // --- 6. Charts ---
+        let charts = {};
+        function renderCharts() {
+            const ctx1 = document.getElementById('studyChart').getContext('2d');
+            const ctx2 = document.getElementById('prayerChart').getContext('2d');
+            
+            const last7Days = [...Array(7)].map((_, i) => {
+                const d = new Date(); d.setDate(d.getDate() - i);
+                return d.toISOString().split('T')[0];
+            }).reverse();
+
+            const studyData = last7Days.map(d => {
+                if(!state.history[d]) return 0;
+                const totalSec = Object.values(state.history[d].study).reduce((a, b) => a + b, 0);
+                return (totalSec / 3600).toFixed(1);
+            });
+
+            const prayerData = last7Days.map(d => {
+                if(!state.history[d]) return 0;
+                const count = Object.values(state.history[d].prayer).filter(v => v === 'জামাত' || v === 'ঘরে').length;
+                return (count / 5) * 100;
+            });
+
+            if(charts.study) charts.study.destroy();
+            charts.study = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: last7Days.map(d => d.split('-')[2]),
+                    datasets: [{
+                        label: 'ঘণ্টা',
+                        data: studyData,
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 8
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            if(charts.prayer) charts.prayer.destroy();
+            charts.prayer = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: last7Days.map(d => d.split('-')[2]),
+                    datasets: [{
+                        label: 'আদায়ের হার %',
+                        data: prayerData,
+                        borderColor: '#10b981',
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)'
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        // --- 7. Modals & Focus Mode ---
+        function showSuccess(msg) {
+            document.getElementById('success-msg').innerText = msg;
+            document.getElementById('success-modal').style.display = 'flex';
+        }
+        function closeModal() { document.getElementById('success-modal').style.display = 'none'; }
+
+        function openFocusMode() {
+            const sub = document.getElementById('study-subject-select').value;
+            if(!sub) return alert("বিষয় নির্বাচন করুন!");
+            document.getElementById('focus-sub').innerText = sub + " নিয়ে কাজ চলছে...";
+            document.getElementById('focus-overlay').classList.add('active');
+            if(!activeTimer.interval) toggleStudyTimer();
+        }
+        function closeFocusMode() { document.getElementById('focus-overlay').classList.remove('active'); }
+
+        // Initializer
+        window.onload = () => {
+            document.body.setAttribute('data-theme', state.theme);
+            initDay();
+            renderUI();
+            loadRoutineDay();
+        };
+    </script>
+</body>
+</html>
